@@ -1,3 +1,14 @@
+---
+title: tree-shaking
+nav:
+  title: webpack
+  path: /webpack
+  order: 0
+group:
+  title: webpack相关试题
+  path: /webpack/project
+---
+
 # 谈谈你对 tree-shaking 的理解?
 
 - 2021.06.01
@@ -21,11 +32,11 @@ const txt =
 export default () => <Info type="warning" txt={txt} />;
 ```
 
-### 为什么需要使用 tree-shaking?
+## 为什么需要使用 tree-shaking?
 
 通过 `tree-shaking` 我们可以减少页面的加载时间，将无用的代码删除，减少 `js` 包的大小，从而减少用户等待的时间，使用户不因为漫长的等待而离开。
 
-### tree shaking 实现的原理？
+## tree shaking 实现的原理？
 
 `tree shaking` 是基于 `ES6` 的 `module` 模块的。由于 `ES6` 的模块特性，奠定了 `tree shaking` 的实现基础。
 
@@ -36,7 +47,7 @@ export default () => <Info type="warning" txt={txt} />;
 3. `import binding`  是  `immutable`永久性的。
 4. 代码擦除是在 `uglify` 阶段删除无用代码。
 
-### 扩展：上述描述到如果模块是不纯,那么 tree shaking 检测就会失效，如何优化这部分的功能呢?
+## 扩展：上述描述到如果模块是不纯,那么 tree shaking 检测就会失效，如何优化这部分的功能呢?
 
 比如说类似 `IIFE` 函数中存在着闭包，只要代码不是纯的代码，该代码就不会被 `tree-shaking` 摇树优化掉。
 
