@@ -141,7 +141,6 @@ Function.prototype.bind = function (context = window) {
 ```js
 function typeOf(value) {
   return function (obj) {
-    s;
     const map = {
       '[object Boolean]': 'boolean',
       '[object Number]': 'number',
