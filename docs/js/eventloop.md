@@ -1,5 +1,5 @@
 ---
-title: Event Loop
+title: 事件循环(Event Loop)
 nav:
   title: javascript
   path: /javascript
