@@ -1,0 +1,32 @@
+.height-auto-page {
+  background: #f5f5f5;
+  font-size: 18px;
+  color: #fff;
+  text-align: center;
+  user-select: none;
+  .block-height-auto {
+    background: rgb(88, 189, 236);
+    height: auto;
+    margin-bottom: 20px;
+  }
+  .inline-height-auto {
+    background: rgb(96, 219, 14);
+    height: auto;
+  }
+  .block-height-auto-children {
+    background: crimson;
+    height: auto;
+    > p {
+      height: 50%;
+    }
+  }
+  .block-height-normal-children {
+    background: rgb(104, 42, 218);
+    height: 100px;
+    > p {
+      background: darkkhaki;
+      height: 50%;
+      line-height: 50px;
+    }
+  }
+}

@@ -39,7 +39,7 @@ module.exports = {
 
 `webpack` 打包过程中会给 `module2` 添加一些代码,主要就是主动触发。
 
-`window["webpackJsonp"].push `这个函数,这个函数会传递两个参数 `文件ID` 和 `文件内容对象`,其中 文件标示如果没有配置的话,会按载入序号自动增长,文件内容对象实际上就是上文说的 `require.ensure` 第一个参数 `dependencies` 的文件内容,或者是 `callback`,`errorCallback` 里面需要加载的文件,以 `key(文件路径)` --- `value(文件内容)`的形式出现.
+`window["webpackJsonp"].push`这个函数,这个函数会传递两个参数 `文件ID` 和 `文件内容对象`,其中 文件标示如果没有配置的话,会按载入序号自动增长,文件内容对象实际上就是上文说的 `require.ensure` 第一个参数 `dependencies` 的文件内容,或者是 `callback`,`errorCallback` 里面需要加载的文件,以 `key(文件路径)` --- `value(文件内容)`的形式出现.
 
 里面执行的事情其实就是执行上面创建的 `promise` 的 `resolve` 函数,让 `require.ensure` 里面的 `callback` 执行,之后的执行情况就跟我上面`require` 和 `import` 一样了。
 

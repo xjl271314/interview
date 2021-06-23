@@ -13,19 +13,19 @@ group:
 
 - 2021.06.01
 
-## Loader:
+## Loader
 
-> `loader` 的本质就是一个`函数`，将那些 `webpack` 不能直接理解的 `JavaScript 文件`、`CSS 文件`等转化成 `webpack `可以识别的文件。
+> `loader` 的本质就是一个`函数`，将那些 `webpack` 不能直接理解的 `JavaScript 文件`、`CSS 文件`等转化成 `webpack`可以识别的文件。
 
 `Loader` 在 `module.rules` 中配置，作为模块的解析规则，类型为`数组`。每一项都是一个 `Object`，内部包含了 `test(类型文件)`、`loader`、`options (参数)`等属性。
 
-### 在 webpack 的配置中 loader 有两个属性：
+### 在 webpack 的配置中 loader 有两个属性
 
 1. `test 属性`：用于标识出应该被对应的 `loader` 进行转换的某个或某些文件，其书写格式是一个正则表达式。
 
 2. `use 属性`：表示对应匹配出的文件需要使用的 `loader`，其中 `loader` 是一个数组，使用的顺序为`从右往左`。
 
-## webpack 中常见的 loader:
+## webpack 中常见的 loader
 
 - `file-loader`：把文件输出到一个文件夹中，在代码中通过相对 URL 去引用输出的文件 (处理图片和字体)。
 
@@ -53,13 +53,13 @@ group:
 
 - `thread-loader`:可以配置`webpack`进行多进程的打包`js`和`css`。
 
-## Plugin：
+## Plugin
 
 > loader 被用于转换某些类型的模块，而 Plugin 就是插件，基于事件流框架 `Tapable`，插件可以扩展 Webpack 的功能，在 Webpack 运行的生命周期中会广播出许多事件，Plugin 可以监听这些事件，在合适的时机通过 Webpack 提供的 API 改变输出结果。
 
 `Plugin` 在 `plugins` 中单独配置，类型为数组，每一项是一个 `Plugin` 的实例，需要手动通过`new Plugin(options)`进行，参数都通过构造函数传入。
 
-## webpack 中常见的 Plugin：
+## webpack 中常见的 Plugin
 
 - `commons-chunk-plugin`：主要是用来提取第三方库和公共模块，避免首屏加载的 `bundle` 文件或者按需加载的 `bundle` 文件体积过大，从而导致加载时间过长，是一把优化项目的利器。
 
@@ -93,9 +93,9 @@ group:
 
 - `DllReferencePlugin`：此插件配置在 `webpack` 的主配置文件中，此插件会把 `dll-only-bundles` 引用到需要的预编译的依赖中。
 
-## 编写 loader 或 plugin 的思路：
+## 编写 loader 或 plugin 的思路
 
-### Loader:
+### Loader
 
 `loader` 就是一个 `node` 模块，在 `webpack` 的定义中，`loader` 导出一个函数，`loader` 会在转换源模块（resource）的时候调用该函数。在这个函数内部，我们可以通过传入 `this` 上下文给 `Loader API` 来使用它们。
 
@@ -103,7 +103,7 @@ group:
 
 这里自己写过一个[px2rem](https://xjl271314.github.io/docs/project/webpack.html#%E5%8A%A8%E6%89%8B%E5%AE%9E%E7%8E%B0%E4%B8%80%E4%B8%AA-loader-%E4%B9%8B%E7%AE%80%E6%98%93%E7%9A%84jsx-px2rem)的 Loader。
 
-### Plugin:
+### Plugin
 
 `plugin` 的本质是一个`类`。这个类必须实现的方法就是 `apply`。所以，一个基础的 `plugin` 如下：
 
@@ -132,7 +132,7 @@ plugins: [new MyPlugin()];
 
 在事件中，我们也可以通过 `compiler` 对象来操作 `webpack` 的输出。
 
-#### 在 `webpack` 的 `plugin` 运行的过程中存在两个非常重要的对象：`compiler`和`compilation`。
+#### 在 `webpack` 的 `plugin` 运行的过程中存在两个非常重要的对象：`compiler`和`compilation`
 
 - `compiler`：在初始化 `compiler` 对象之后，通过调用插件实例的 `apply` 方法，作为其参数传入。这个对象包含了 `webpack` 环境的所有的配置信息，比如 `options`，`loaders`，`plugins` 等。这个对象会在 `webpack` 被启动的时候进行实例化，`全局且唯一`的。
 
