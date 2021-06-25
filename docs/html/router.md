@@ -4,7 +4,7 @@ nav:
   title: html
   path: /html
 group:
-  title: html相关试题
+  title: html、浏览器相关试题
   path: /html/project
 ---
 
