@@ -1,12 +1,12 @@
 ---
 title: 如何提高webpack的构建速度？
 nav:
-  title: webpack
-  path: /webpack
+  title: 工程化
+  path: /project
   order: 0
 group:
-  title: webpack相关试题
-  path: /webpack/project
+  title: 前端工程化相关试题
+  path: /project/project
 ---
 
 # 如何提高 webpack 的构建速度？

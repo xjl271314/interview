@@ -1,12 +1,12 @@
 ---
 title: webpack、grunt、gulp
 nav:
-  title: webpack
-  path: /webpack
+  title: 工程化
+  path: /project
   order: 0
 group:
-  title: webpack相关试题
-  path: /webpack/project
+  title: 前端工程化相关试题
+  path: /project/project
 ---
 
 # webpack 与 grunt、gulp 之间有啥不同？
