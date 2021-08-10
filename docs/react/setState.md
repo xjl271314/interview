@@ -9,11 +9,13 @@ group:
   path: /react/project
 ---
 
-# React 中 setState 是同步还是异步的?
+# setState 详解
 
-- 2021.06.03
+- 2021.08.10
 
-> 首先 React 中的 setState 是异步的。
+## React 中 setState 是同步还是异步的?
+
+> 首先 React 中的 setState 是异步的，定义为异步不是说该方法本身就是异步的，实际上是同步模式只是看起来像异步。
 
 ```js
 import React, { Component } from 'react';
@@ -51,13 +53,13 @@ class Button extends Component {
 
 但如果真是这样的话，`this.setState()` 是怎么在其它环境中运行的呢？例如，在 `React Native` 中组件同样也继承了 `React.Component`。`RN` 里面也会调用 `this.setState()`，但是 `RN` 运行在 `Android` 和 `iOS` 原生视图中，而不是 `DOM` 中。
 
-#### 因此 `React.Component` 肯定是以`某种方式委托处理状态`更新到特定平台的代码。
+**因此 `React.Component` 肯定是以`某种方式委托处理状态`更新到特定平台的代码。**
 
 实际上，从 `react 0.14` 以后，`react` 有意只暴露定义组件的接口，`React` 的大多数实现都依托于 `renderers`.
 
 `renderer` 则暴露出平台相关的接口，比如 `ReactDOM.render()` 可以使你将 `React` 层级渲染到 `DOM` 节点中。每个 `renderer` 都提供了类似的接口。理想情况下，大多数组件不应该从 `renderer` 中引入认定和东西，这样可以使组件变得 `protable`(即像移动硬盘一样，即插即用)。
 
-#### 核心意思是，`react` 包只让你使用 `react` 功能，而对于怎么实现 `react` 包是不管的。`renderer` 包（比如 `react-dom`，`react-native` 等）提供了 `React Features` 的实现 和平台指定的逻辑。某些代码是共享的（`reconciler`），但这是各个渲染器的实现细节。
+**核心意思是，`react` 包只让你使用 `react` 功能，而对于怎么实现 `react` 包是不管的。`renderer` 包（比如 `react-dom`，`react-native` 等）提供了 `React Features` 的实现 和平台指定的逻辑。某些代码是共享的（`reconciler`），但这是各个渲染器的实现细节。**
 
 ```jsx
 /**
@@ -109,7 +111,75 @@ Component.prototype.forceUpdate = function (callback) {
 };
 ```
 
-#### 这就是为什么 `this.setState()`定义在 `React` 包中也能更新 `DOM` 的原因，它读取 `React DOM `设置的 `this.updater` ，然后让 `React DOM` 计划和处理更新。
+**这就是为什么 `this.setState()`定义在 `React` 包中也能更新 `DOM` 的原因，它读取 `React DOM` 设置的 `this.updater` ，然后让 `React DOM` 计划和处理更新。**
+
+## setState 执行过程
+
+<!-- ![setState 执行过程](https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2019/2/23/169197bbdc7ae14e~tplv-t2oaga2asx-watermark.awebp) -->
+
+```js
+handleClick = () => {
+  // 正常的操作
+  this.setState({
+    count: this.state.count + 1,
+  });
+};
+
+handleClick = () => {
+  // 脱离 React 控制的操作
+  setTimeout(() => {
+    this.setState({
+      count: this.state.count + fans,
+    });
+  });
+};
+```
+
+- `Component.setState` 方法最终会调用 `enqueueSetState` 方法 ，而 `enqueueSetState` 方法内部会调用 `scheduleUpdateOnFiber` 方法，区别就在于正常调用的时候，`scheduleUpdateOnFiber` 方法内只会调用 `ensureRootIsScheduled` ，在事件方法结束后，才会调用 `flushSyncCallbackQueue` 方法 ​。
+
+- 而脱离 `React` 事件流的时候，`scheduleUpdateOnFiber` 在 `ensureRootIsScheduled` 调用结束后，会直接调用 `flushSyncCallbackQueue` 方法，这个方法就是用来更新 `state` 并重新进行 `render`。
+
+```js
+function scheduleUpdateOnFiber(fiber, lane, eventTime) {
+  if (lane === SyncLane) {
+    // 同步操作
+    ensureRootIsScheduled(root, eventTime);
+    // 判断当前是否还在 React 事件流中
+    // 如果不在，直接调用 flushSyncCallbackQueue 更新
+    if (executionContext === NoContext) {
+      flushSyncCallbackQueue();
+    }
+  } else {
+    // 异步操作
+  }
+}
+```
+
+上述代码可以简单描述这个过程，主要是判断了 `executionContext` 是否等于 `NoContext` 来确定当前更新流程是否在 `React` 事件流中。
+
+众所周知，`React` 在绑定事件时，会对事件进行合成，统一绑定到 `document` 上（ `react@17` 有所改变，变成了绑定事件到 `render` 时指定的那个 DOM 元素），最后由 `React` 来派发。
+
+所有的事件在触发的时候，都会先调用 `batchedEventUpdates$1` 这个方法，在这里就会修改 `executionContext` 的值，`React` 就知道此时的 `setState` 在自己的掌控中。
+
+```js
+// executionContext 的默认状态
+var executionContext = NoContext;
+function batchedEventUpdates$1(fn, a) {
+  var prevExecutionContext = executionContext;
+  executionContext |= EventContext; // 修改状态
+  try {
+    return fn(a);
+  } finally {
+    executionContext = prevExecutionContext;
+    // 调用结束后，调用 flushSyncCallbackQueue
+    if (executionContext === NoContext) {
+      flushSyncCallbackQueue();
+    }
+  }
+}
+```
+
+所以，不管是直接调用 `flushSyncCallbackQueue` ，还是推迟调用，这里本质上都是同步的，只是有个先后顺序的问题。
 
 ## Hooks 中的 useState 又是怎么实现的呢？
 
@@ -149,7 +219,7 @@ try {
 }
 ```
 
-这也意味着，Hooks 本身并不依赖于 React。如果将来有更多的库想要复用相同的原始 Hooks，理论上，dispatcher 程序可以移植到一个单独的包中，并且作为第一级 API 以一个不太恐怖的名字暴露出去。
+这也意味着，`Hooks` 本身并不依赖于 `React`。如果将来有更多的库想要复用相同的原始 `Hooks`，理论上，`dispatcher` 程序可以移植到一个单独的包中，并且作为第一级 `API` 以一个不太恐怖的名字暴露出去。
 
 ## 为什么有时连续两次 setState 只有一次生效？
 
@@ -214,3 +284,27 @@ componentDidMount() {
 | `componentWillUnmount()`            |         ❌         | 此生命周期不应调用`setState()`，因为该组件将永远不会重新渲染，组件实例卸载后，将永远不会再挂载它。 <br/><br/>如果在该生命周期进行调用,经常会导致内存溢出的警告 ⚠️。 |
 | `componentDidCatch()`               |         ✅         | 此生命周期可以在捕获到错误后进行`state`存储。                                                                                                                       |
 | `static getDerivedStateFromError()` |         ❌         | 此生命周期在收到错误后执行,也需要返回新的`state`对象。                                                                                                              |
+
+## 未来会有异步的 setState
+
+```js
+function scheduleUpdateOnFiber(fiber, lane, eventTime) {
+  if (lane === SyncLane) {
+    // 同步操作
+    ensureRootIsScheduled(root, eventTime);
+    // 判断当前是否还在 React 事件流中
+    // 如果不在，直接调用 flushSyncCallbackQueue 更新
+    if (executionContext === NoContext) {
+      flushSyncCallbackQueue();
+    }
+  } else {
+    // 异步操作
+  }
+}
+```
+
+在`scheduleUpdateOnFiber`方法中有做`同步、异步判断`。React 在两年前，升级 `fiber` 架构的时候，就是为其异步化做准备的。在 `React 18 `将会正式发布 `Concurrent` 模式，关于 `Concurrent` 模式，官方的介绍如下。
+
+![Concurrent](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/7617b796d43b461b92cb0ca276cc3be0~tplv-k3u1fbpfcp-watermark.awebp)
+
+> `Concurrent` 模式是一组 `React` 的新功能，可帮助应用保持响应，并根据用户的设备性能和网速进行适当的调整。在 `Concurrent` 模式中，渲染不是阻塞的。它是可中断的。这改善了用户体验。它同时解锁了以前不可能的新功能。

@@ -298,6 +298,7 @@ class App extends React.Component {
 例子 2:
 
 ```js
+// < Version 17
 export default class Modal extends PureComponent {
   constructor(props) {
     super(props);
