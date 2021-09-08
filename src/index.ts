@@ -8,3 +8,5 @@ export { default as CSSWrapNormal } from './Wrap/normal';
 export { default as CSSWrapBreak } from './Wrap/wordbreak';
 export { default as CSSWrapBreakWrap } from './Wrap/wordwrap';
 export { default as CSSLineBreak } from './Wrap/linebreak';
+
+export { timestampToTime } from './utils';

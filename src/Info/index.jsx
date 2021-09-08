@@ -29,6 +29,10 @@ export default ({ type = 'info', title = '', txt }) => {
     if (!title && type === 'warning') {
       return '警告⚠️';
     }
+
+    if (!title && type === 'error') {
+      return '错误❌';
+    }
   }, [title, type]);
 
   return (
