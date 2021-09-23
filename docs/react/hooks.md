@@ -370,7 +370,7 @@ export default class Example extends React.Component {
           <li>updatedCount: {this.state.count}</li>
           <li>nextCount: {this.nextCount}</li>
         </ul>
-        <Space type="vertical">
+        <Space direction="vertical">
           <Button type="primary" onClick={this.addCount}>
             点击我 Count + 1
           </Button>
@@ -453,6 +453,176 @@ import { Info } from 'interview';
 const txt = `\nState updates from the useState() and useReducer() Hooks don't support the second callback argument. To execute a side effect after rendering, declare it in the component body with useEffect();`;
 
 export default () => <Info type="error" txt={txt} />;
+```
+
+### QA：如何基于 useState 封装 class 组件的 setState 方法?
+
+- 最先想到的根据 useEffect 示例:
+
+```js
+import { useState, useEffect } from 'react';
+
+const useSetState = (initState = '', callback = (state: any) => void 0) => {
+  const [state, setState] = useState(initState);
+
+  useEffect(() => {
+    callback(state);
+  }, [callback, state]);
+
+  return [state, setState];
+};
+
+export default useSetState;
+```
+
+<!-- ![请添加图片描述](https://img-blog.csdnimg.cn/48eeb4d53f44423bbcd8fd1ec55471e2.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBAeGpsMjcxMzE0,size_20,color_FFFFFF,t_70,g_se,x_16) -->
+
+```jsx
+import React, { useState, useRef, useEffect } from 'react';
+import { Button, Space, message } from 'antd';
+import { useSetState } from 'interview';
+
+export default function App() {
+  const [count, setCount] = useSetState(0, () => {
+    message.info(`newCount: ${count}`);
+  });
+
+  const addCount = () => {
+    setCount((c) => c + 1);
+  };
+
+  return (
+    <Space direction="vertical">
+      <div>当前 count: {count}</div>
+      <Button type="primary" onClick={addCount}>
+        点击我 Count +1
+      </Button>
+    </Space>
+  );
+}
+```
+
+这种方式可以实现当 `state` 变更的时候拿到最新的`state`，但是和 `this.setState` 的调用方式并不一致。
+
+- 换种思路，使用`useRef`结合`useEffect`来实现
+
+```js
+import { useState, useRef, useEffect } from 'react';
+
+const useStateCallback = (initState: any = '') => {
+  const isUpdate = useRef();
+  const [state, setState] = useState(initState);
+
+  const setStateCallback = (state: any, cb: any) => {
+    setState((prev: any) => {
+      isUpdate.current = cb;
+      return typeof state === 'function' ? state(prev) : state;
+    });
+  };
+
+  useEffect(() => {
+    if (isUpdate.current) {
+      console.log('isUpdate.current');
+      typeof isUpdate.current === 'function' && isUpdate.current();
+    }
+  });
+
+  return [state, setStateCallback];
+};
+
+export default useStateCallback;
+```
+
+```jsx
+import React, { useState, useRef, useEffect } from 'react';
+import { Button, Space, message } from 'antd';
+import { useStateCallback } from 'interview';
+
+export default function App() {
+  const [count, setCount] = useStateCallback(0);
+  const [state, setState] = useStateCallback({
+    name: 'jack',
+    age: 24,
+  });
+
+  const addCount = () => {
+    setCount(
+      (c) => c + 1,
+      (newCount) => {
+        message.success(`最新的count：${newCount}`);
+      },
+    );
+  };
+
+  const changeInfo = () => {
+    setState(
+      {
+        name: 'Lucky',
+      },
+      (state) => {
+        message.success(`修改成功,当前用户信息，${state.name} ${state.age}`);
+      },
+    );
+  };
+
+  return (
+    <Space>
+      <div>
+        <div>当前 count: {count}</div>
+        <Button type="primary" onClick={addCount}>
+          点击我 Count +1
+        </Button>
+      </div>
+      <div>
+        <div>当前 用户昵称: {state.name}</div>
+        <div>当前 用户年龄: {state.age}</div>
+        <Button onClick={changeInfo}>点击我修改用户昵称为Lucky</Button>
+      </div>
+    </Space>
+  );
+}
+```
+
+- 使用`Promise`来处理
+
+```jsx
+import React, { useState, useRef, useEffect } from 'react';
+import { Button, Space, message } from 'antd';
+import { useStatePromise } from 'interview';
+
+export default function App() {
+  const [state, setState] = useStatePromise({
+    name: 'jack',
+    like: 'banana',
+    count: 0,
+  });
+
+  const changeInfo = () => {
+    setState({ like: 'watermelon' }).then((res) => {
+      console.log(res);
+    });
+  };
+
+  const addCount = () => {
+    setState((prev) => ({ count: prev.count + 1 })).then((res) => {
+      console.log(res);
+    });
+  };
+
+  return (
+    <Space>
+      <Space direction="vertical">
+        <div>当前 用户昵称: {state.name}</div>
+        <div>当前 用户喜欢: {state.like}</div>
+        <Button onClick={changeInfo}>点击我修改水果为watermelon</Button>
+      </Space>
+      <Space direction="vertical">
+        <div>当前 count {state.count}</div>
+        <Button onClick={addCount}>点击我count+1</Button>
+      </Space>
+    </Space>
+  );
+}
 ```
 
 ## useEffect

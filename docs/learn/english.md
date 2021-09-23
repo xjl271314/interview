@@ -8,3 +8,7 @@ group:
   title: 词汇
   path: /learn/english
 ---
+
+## 通用
+
+1.`lane` 英 [leɪn] 美 [leɪn] [lane 在线翻译](https://dict.youdao.com/search?q=lane&keyfrom=new-fanyi.smartResult)

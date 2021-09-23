@@ -10,3 +10,6 @@ export { default as CSSWrapBreakWrap } from './Wrap/wordwrap';
 export { default as CSSLineBreak } from './Wrap/linebreak';
 
 export { timestampToTime } from './utils';
+
+// Hooks
+export { useSetState, useStateCallback, useStatePromise } from './Hooks';
