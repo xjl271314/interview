@@ -210,7 +210,7 @@ V = -1 ^ (S * (1 + Fraction) * 2) ^ E;
 
 因为两次存储时的精度丢失加上一次运算时的精度丢失，最终导致了 `0.1 + 0.2 !== 0.3`.
 
-## 十进制转二进制如果忘记了的话可以参考下:
+## 十进制转二进制
 
 #### 1. `正整数转化`: 不断除以 2 余数从下往上读。
 
@@ -299,4 +299,19 @@ export default () => <Info type="info" txt={txt} />;
 0 * 2^-2 = 0
 1 * 2^-3 = 0.125
 // 相加后是42.125
+```
+
+## 全进制转换方法
+
+```js
+parseInt(num, 8); //八进制转十进制
+parseInt(num, 16); //十六进制转十进制
+parseInt(num).toString(8); //十进制转八进制
+parseInt(num).toString(16); //十进制转十六进制
+parseInt(num, 2).toString(8); //二进制转八进制
+parseInt(num, 2).toString(16); //二进制转十六进制
+parseInt(num, 8).toString(2); //八进制转二进制
+parseInt(num, 8).toString(16); //八进制转十六进制
+parseInt(num, 16).toString(2); //十六进制转二进制
+parseInt(num, 16).toString(8); //十六进制转八进制
 ```
