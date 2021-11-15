@@ -44,3 +44,12 @@ group:
 > 英 [eɪˈsɪŋkrənəsli] [在线翻译](https://dict.youdao.com/w/asynchronously/#keyfrom=dict2.top)
 
 - adj. 异步的;
+
+### anonymous
+
+> 英 [əˈnɒnɪməs] 美[əˈnɑːnɪməs]
+
+- adj. 匿名的，不知名的；不记名的，不具名的；无特色的
+
+1. anonymous function 匿名函数
+2. anonymous remailer 匿名邮件

@@ -59,3 +59,17 @@
     }
   }
 }
+
+// 兼容暗黑主题
+html[data-prefers-color='dark'] {
+  .components_info {
+    &.error {
+      background-color: @error-background-color;
+      border-color: @error-border-color;
+
+      pre {
+        color: @warning-dark-text-color;
+      }
+    }
+  }
+}
