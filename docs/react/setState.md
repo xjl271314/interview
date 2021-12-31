@@ -303,8 +303,66 @@ function scheduleUpdateOnFiber(fiber, lane, eventTime) {
 }
 ```
 
-在`scheduleUpdateOnFiber`方法中有做`同步、异步判断`。React 在两年前，升级 `fiber` 架构的时候，就是为其异步化做准备的。在 `React 18 `将会正式发布 `Concurrent` 模式，关于 `Concurrent` 模式，官方的介绍如下。
+在`scheduleUpdateOnFiber`方法中有做`同步、异步判断`。React 在两年前，升级 `fiber` 架构的时候，就是为其异步化做准备的。在 `React 18`将会正式发布 `Concurrent` 模式，关于 `Concurrent` 模式，官方的介绍如下。
 
 ![Concurrent](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/7617b796d43b461b92cb0ca276cc3be0~tplv-k3u1fbpfcp-watermark.awebp)
 
 > `Concurrent` 模式是一组 `React` 的新功能，可帮助应用保持响应，并根据用户的设备性能和网速进行适当的调整。在 `Concurrent` 模式中，渲染不是阻塞的。它是可中断的。这改善了用户体验。它同时解锁了以前不可能的新功能。
+
+## 总结
+
+1. 钩子函数和合成事件中：
+
+   在`react`的生命周期和合成事件中，`react`仍然处于他的更新机制中，这时`isBranchUpdate`为`true`。
+
+   按照上述过程，这时无论调用多少次`setState`，都会不会执行更新，而是将要更新的`state`存入`_pendingStateQueue`，将要更新的组件存入`dirtyComponent`。
+
+   当上一次更新机制执行完毕，以生命周期为例，所有组件，即最顶层组件`didmount`后会将`isBranchUpdate`设置为`false`。这时将执行之前累积的`setState`。
+
+2. 异步函数和原生事件中
+
+   由执行机制看，`setState`本身并不是异步的，而是如果在调用`setState`时，如果`react`正处于更新过程，当前更新会被暂存，等上一次更新执行后在执行，这个过程给人一种异步的假象。
+
+   在生命周期，根据 JS 的异步机制，会将异步函数先暂存，等所有同步代码执行完毕后在执行，这时上一次更新过程已经执行完毕，`isBranchUpdate`被设置为`false`，根据上面的流程，这时再调用`setState`即可立即执行更新，拿到更新结果。
+
+3. partialState 合并机制
+
+   流程中`_processPendingState`的代码，这个函数是用来合并`state`暂存队列的，最后返回一个合并后的`state`。
+
+   ```js
+   _processPendingState: function (props, context) {
+       var inst = this._instance;
+       var queue = this._pendingStateQueue;
+       var replace = this._pendingReplaceState;
+       this._pendingReplaceState = false;
+       this._pendingStateQueue = null;
+
+       if (!queue) {
+           return inst.state;
+       }
+
+       if (replace && queue.length === 1) {
+           return queue[0];
+       }
+
+       var nextState = _assign({}, replace ? queue[0] : inst.state);
+       for (var i = replace ? 1 : 0; i < queue.length; i++) {
+           var partial = queue[i];
+           _assign(nextState, typeof partial === 'function' ? partial.call(inst, nextState, props, context) : partial);
+       }
+
+       return nextState;
+   },
+   ```
+
+   如果传入的是对象，很明显会被合并成一次：
+
+   ```js
+   Object.assign(
+     nextState,
+     { index: state.index + 1 },
+     { index: state.index + 1 },
+   );
+   ```
+
+   如果传入的是函数，函数的参数`preState`是前一次合并后的结果，所以计算结果是准确的。

@@ -31,6 +31,35 @@ group:
 
 1. `object`
 
+## 为什么区分原始类型和引用类型
+
+- 不可变性
+
+  原始类型，在`ECMAScript`标准中，它们被定义为`primitive values`，即原始值，代表值本身是不可被改变的。
+
+  以**字符串**为例，我们在调用操作字符串的方法时，没有任何方法是可以直接改变字符串的：
+
+  ```js
+  var str = 'Hello';
+  str.slice(1); // ello
+  str.substr(1); // ello
+  str.trim(1); // Hello
+  str.toLowerCase(1); // hello
+  str[0] = 1;
+  console.log(str); // Hello
+  ```
+
+  在上面的代码中我们对 str 调用了几个方法，这些方法都在原字符串的基础上产生了一个新字符串，而非直接去改变 str。
+
+  而当我们通过运算符去处理的时候:
+
+  ```js
+  str += ' world';
+  console.log(str); // Hello world
+  ```
+
+  这个时候 str 的值发生了改变，实际上它是因为：**在栈中开辟了一个新的空间用于存储`Hello world`,并将 str 指向了这个空间。**
+
 ## 变量的存储方式
 
 在我们将一个值赋给变量时，解析器必须确定这个值是`基本类型值`还是`引用类型值`。
@@ -389,6 +418,24 @@ const txt =
   '\n因此可见，函数参数传递的并不是变量的引用，而是`变量拷贝的副本`，当变量是`原始类型`时，这个副本就是值本身，当变量是`引用类型`时，这个副本是指向堆内存的地址。';
 
 export default () => <Info txt={txt} />;
+```
+
+## 包装类型
+
+为了便于操作基本类型值，ECMAScript 还提供了几个特殊的引用类型，他们是基本类型的包装类型：
+
+- Boolean
+- Number
+- String
+
+包装类型和原始类型的区别：
+
+```js
+true === new Boolean(true); // false
+123 === new Number(123); // false
+'123' === new String('123'); // false
+console.log(typeof new String('123')); // object
+console.log(typeof '123'); // string
 ```
 
 ## 引用类型与基本类型生命周期
