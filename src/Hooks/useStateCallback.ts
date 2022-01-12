@@ -5,18 +5,22 @@ const useStateCallback = (initState: any = '') => {
   const [state, setState] = useState(initState);
 
   const setStateCallback = (state: any, cb: any) => {
-    setState((prev: any) => {
+    setState((prev: any = {}) => {
       isUpdate.current = cb;
       // 如果state是方法 相当于prevState => prevState + operator
       const assignState = () => {
-        if (typeof state === 'object') {
-          return { ...prev, ...state };
-        }
-
-        if (typeof state === 'function') {
+        // handle function
+        if (state instanceof Function) {
           return state(prev);
         }
-
+        // handle array
+        if (state instanceof Array) {
+          return state;
+        }
+        // handle object
+        if (typeof state === 'object') {
+          return JSON.stringify(state) == '{}' ? {} : { ...prev, ...state };
+        }
         return state;
       };
 

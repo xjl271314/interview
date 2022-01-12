@@ -10,11 +10,13 @@ const useStatePromise = (initState: any = '') => {
     return new Promise((resolve) => {
       setState((prevState: any) => {
         let nextVal = updater;
-        if (typeof updater === 'function') {
+        if (updater instanceof Function) {
           nextVal = updater(prevState.value);
         }
+
         return {
-          value: { ...initState, ...nextVal },
+          value:
+            JSON.stringify(updater) == '{}' ? {} : { ...initState, ...nextVal },
           resolve,
         };
       });

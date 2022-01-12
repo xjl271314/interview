@@ -1,12 +1,12 @@
 ---
 title: 无重复字符的最长子串
 nav:
-  title: 算法
-  path: /write
-  order: 0
+  title: 编程题
+  path: /writing
 group:
-  title: 算法相关试题
-  path: /write/project
+  title: 中等
+  path: /writing/project/middle
+  order: 2
 ---
 
 # LeetCode:无重复字符的最长子串(难度:中等)

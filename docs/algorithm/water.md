@@ -1,12 +1,12 @@
 ---
 title: 接雨水
 nav:
-  title: 算法
-  path: /write
-  order: 0
+  title: 编程题
+  path: /writing
 group:
   title: 困难
-  path: /write/project/difficult
+  path: /writing/project/difficult
+  order: 3
 ---
 
 # LeetCode 42：接雨水

@@ -1,12 +1,12 @@
 ---
 title: 两数之和
 nav:
-  title: 算法
-  path: /write
-  order: 0
+  title: 编程题
+  path: /writing
 group:
-  title: 算法相关试题
-  path: /write/project
+  title: 简单
+  path: /writing/project/easy
+  order: 1
 ---
 
 # LeetCode:两数之和(难度:简单)

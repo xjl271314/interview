@@ -1,12 +1,12 @@
 ---
 title: 前端安全性
 nav:
-  title: 前端安全
-  path: /safe
+  title: 前端工程化
+  path: /project
   order: 0
 group:
   title: 前端安全
-  path: /safe/project
+  path: /project/safe
 ---
 
 # 前端安全性

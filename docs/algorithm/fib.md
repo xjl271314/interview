@@ -1,12 +1,12 @@
 ---
 title: 斐波那契数
 nav:
-  title: 算法
-  path: /write
-  order: 0
+  title: 编程题
+  path: /writing
 group:
   title: 简单
-  path: /write/project/easy
+  path: /writing/project/easy
+  order: 1
 ---
 
 # LeetCode 509：斐波那契数
