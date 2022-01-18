@@ -315,3 +315,17 @@ group:
   - Don't emulate bubbling of the `onScroll` event. (@gaearon in [#19464](https://github.com/facebook/react/pull/19464))
 
   - Throw if `forwardRef` or memo component returns `undefined`. (@gaearon in [#19550](https://github.com/facebook/react/pull/19550))
+
+## 17.0.1
+
+2020.10.22
+
+- React DOM
+  - Fix a crash in IE11. (@gaearon in [#20071](https://github.com/facebook/react/pull/20071))
+
+## 17.0.2
+
+2021.3.22
+
+- React DOM
+  - Remove an unused dependency to address the SharedArrayBuffer cross-origin isolation warning. (@koba04 and @bvaughn in [#20831](https://github.com/facebook/react/pull/20831), [#20832](https://github.com/facebook/react/pull/20832), and [#20840](https://github.com/facebook/react/pull/20840))

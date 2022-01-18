@@ -9,7 +9,7 @@ group:
   path: /project/english
 ---
 
-## 通用
+## 单词
 
 ### lane
 
@@ -80,3 +80,41 @@ group:
 18. computer algorithm 计算机程序法
 19. simplex algorithm 单纯型算法
 20. generic algorithm n. 泛型算法；通用算法
+
+### briefly
+
+> 英 [ˈbriːfli] 美 [ˈbriːfli] [在线翻译](http://dict.youdao.com/w/briefly/#keyfrom=dict2.top)
+
+- adv. 简短地，简要地；短暂地，暂时地
+
+1. The browser is briefly allocating space in the disk cache。 浏览器正在磁盘高速缓存中分配空间。
+
+### approvals
+
+> 美[əˈpruv(ə)lz] 英[əˈpruːv(ə)lz] [在线翻译](http://dict.youdao.com/w/approvals/#keyfrom=dict2.top)
+
+- n. 批准；认可（approval 的复数）
+
+1. approvals engineer 认证工程师
+2. merge request approvals 批准合并代码
+
+### snippets
+
+> [ˈsnipits]　[在线翻译](http://dict.youdao.com/w/snippets/#keyfrom=dict2.top)
+
+- n. 片段（snippet 的复数形式）；小片
+
+1. code snippets 代码片段 ; 代码段 ;
+2. rich snippets 网页摘要 ; 富文本 ;
+
+### assignee
+
+> 英 [əˌsaɪˈniː] 美 [əˌsaɪˈni] [在线翻译](http://dict.youdao.com/w/Assignee/#keyfrom=dict2.top)
+
+- n. 代理人；受托人；分配到任务的人
+
+### suspense
+
+> 英 [səˈspens] 美 [səˈspens] [在线翻译](http://dict.youdao.com/w/suspense/#keyfrom=dict2.top)
+
+- n. 焦虑，悬念，兴奋；<法律> 暂停，权利中止

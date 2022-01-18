@@ -13,6 +13,12 @@ group:
 
 - 2022.01.12
 
+## 浏览器图片资源请求 timing
+
+![示例timing](https://img-blog.csdnimg.cn/46286e1368a64f1ca89be021fa2ce003.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAeGpsMjcxMzE0,size_20,color_FFFFFF,t_70,g_se,x_16)
+
+[完整的 timing 解释](https://developer.chrome.com/docs/devtools/network/reference/?utm_source=devtools#timing-explanation)
+
 ## 图片常用格式说明
 
 ### png
@@ -79,6 +85,8 @@ PNG-8 相比之下确实使用了更少的空间来存储颜色，但是他能�
 
 > GIF 是 Graphics Interchange Format 的简写，它是图形转换格式，采用 LZW 压缩算法进行编码，用于以超文本标志语言（Hypertext Markup Language）方式显示索引彩色图像，在因特网和其他在线服务系统上得到广泛应用。
 
+GIF 是一种最多支持 256 种颜色的 8 位无损图片格式。
+
 GIF 可以被 PC 和 Mactiontosh 等多种平台上被支持，适用于对色彩要求不高同时需要文件体积较小的场景，比如企业 Logo、线框类的图等。
 
 - 优点:
@@ -89,7 +97,7 @@ GIF 可以被 PC 和 Mactiontosh 等多种平台上被支持，适用于对色�
 
 - 缺点:
 
-  1. 由于采用了 8 位压缩最多只能处理 256 种颜色(2 的 8 次方)，故不能真彩图像
+  1. 由于采用了 8 位压缩最多只能处理 256 种颜色(2 的 8 次方)，故不能真彩图像(24 位的图像接近人眼分辨的颜色种类，故称为真彩)
 
 ### TIFF
 
@@ -112,12 +120,22 @@ TIFF（Tag Image File Format）图像文件是图形图像处理中常用的格�
 
   1. 存在一定的兼容性问题
 
+## 图片格式汇总
+
+| 图片类型 | 动画      | 透明度    | 压缩类型      | 浏览器支持情况                       |
+| :------- | :-------- | :-------- | :------------ | :----------------------------------- |
+| GIF      | 支持 ✅   | 支持 ✅   | 无损压缩      | 所有                                 |
+| PNG      | 不支持 ❌ | 支持 ✅   | 无损压缩      | 所有                                 |
+| JPEG     | 不支持 ❌ | 不支持 ❌ | 有损压缩      | 所有                                 |
+| BMP      | 不支持 ❌ | 支持 ✅   | 不支持压缩 ❌ | 不支持 ❌，仅在 windows 系统内部使用 |
+| WEBP     | 支持 ✅   | 支持 ✅   | 无损压缩      | 存在一定兼容性问题                   |
+
 ## 图片体积计算
 
 ```
 图像大小 = 分辨率 * 位深 / 8
 
-分辨率=宽*高（如：1024*768，640*480）
+分辨率 = 宽*高（如：1024*768，640*480）
 
 位深：如24位，16位，8位
 
@@ -130,10 +148,64 @@ TIFF（Tag Image File Format）图像文件是图形图像处理中常用的格�
 
 ## webp 技术支持状况
 
+![webp 技术支持状况](https://cdn.weipaitang.com/static/202201059d84f8a0-1cfc-f8a01cfc-5f3d-c6ab09af0c72-W1167H634)
+
+- 使用 canvas 进行检测
+
+  > `HTMLCanvasElement.toDataURL()` 方法返回一个包含图片展示的 data URI 。可以使用 type 参数其类型，默认为 PNG 格式。
+
+  `toDataURL`方法将图片转化为包含 `dataURI` 的 `DOMString`，通过 `base64` 编码前面的图片类型值是`image/webp`进行判断。
+
+  ```js
+  function supportWebp() {
+    try {
+      return (
+        document
+          .createElement('canvas')
+          .toDataURL('image/webp')
+          .indexOf('data:image/webp') == 0
+      );
+    } catch (err) {
+      return false;
+    }
+  }
+  // 'data:image/webp;base64,UklGRrgAAABXRUJQVlA4WAoAAAAQAAAAKwEAlQAAQUxQSBIAAAABBxARERCQJP7/H0X0P+1/QwBWUDgggAAAAHANAJ0BKiwBlgA+bTaZSaQjIqEgKACADYlpbuF2sRtACewD32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99qwAAP7/1gAAAAAAAAAA'
+  ```
+
+- 使用 image 去加载 webp 图片
+
+  ```js
+  // 'feature' can be one of 'lossy', 'lossless', 'alpha' or 'animation'.
+  // 'callback(feature, result)' will be passed back the detection result (in an asynchronous way!)
+  function check_webp_feature(feature, callback) {
+    var kTestImages = {
+      lossy: 'UklGRiIAAABXRUJQVlA4IBYAAAAwAQCdASoBAAEADsD+JaQAA3AAAAAA',
+      lossless: 'UklGRhoAAABXRUJQVlA4TA0AAAAvAAAAEAcQERGIiP4HAA==',
+      alpha:
+        'UklGRkoAAABXRUJQVlA4WAoAAAAQAAAAAAAAAAAAQUxQSAwAAAARBxAR/Q9ERP8DAABWUDggGAAAABQBAJ0BKgEAAQAAAP4AAA3AAP7mtQAAAA==',
+      animation:
+        'UklGRlIAAABXRUJQVlA4WAoAAAASAAAAAAAAAAAAQU5JTQYAAAD/AABBTk1GJgAAAAAAAAAAAAAAAAAAAGQAAABWUDhMDQAAAC8AAAAQBxAREYiI/gcA',
+    };
+    var img = new Image();
+    img.onload = function () {
+      var result = img.width > 0 && img.height > 0;
+      callback(feature, result);
+    };
+    img.onerror = function () {
+      callback(feature, false);
+    };
+    img.src = 'data:image/webp;base64,' + kTestImages[feature];
+  }
+  ```
+
 ## 优化方案
 
 - 经常使用到的一些小图标使用雪碧图的方式去合成，根据 position 定位去使用不同的 icon。
 
-  该方式主要优化了图片的资源请求数量所带来的耗时问题。
+  该方式主要优化了图片的资源请求数量所带来的耗时问题(同一域名下并发请求最大 6 个)。
 
--
+- 图片的懒加载
+
+  通过减少首屏的图片资源加载梳理来优化。
+
+- 使用 iconfont 字体库图标来代替图片图标。
