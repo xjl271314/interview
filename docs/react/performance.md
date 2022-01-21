@@ -136,6 +136,44 @@ export default class User extends React.Component{
  * log组件第二次不会重新渲染
 ```
 
+- 另外一个示例:
+
+```jsx
+import React from 'react';
+
+class Text extends React.PureComponent {
+  render() {
+    console.log(this.props);
+    return <div>hello,wrold</div>;
+  }
+}
+
+class Index extends React.Component {
+  state = {
+    data: { a: 1, b: 2 },
+  };
+  handerClick = () => {
+    const { data } = this.state;
+    data.a++;
+    this.setState({ data });
+  };
+  render() {
+    const { data } = this.state;
+    console.log('parent render', data);
+    return (
+      <div>
+        <button onClick={this.handerClick}>点击</button>
+        <Text data={data} />
+      </div>
+    );
+  }
+}
+
+export default Index;
+```
+
+上述代码中虽然 data 变了但是浅比较的时候返回了 false，因此子组件不会重新渲染。
+
 ```jsx
 /**
  * inline: true
@@ -242,6 +280,59 @@ const App = (props) => {
 在上面例子中， `computeExpensiveFunc` 是一个非常耗时的计算，但是当我们触发 `setBoolean` 时，组件会重新渲染， `computeExpensiveFunc` 会执行一次。这次执行是毫无意义的，因为 `computeExpensiveFunc` 的结果只与 start 有关系。
 
 `React.useMemo` 就是为了解决这个问题诞生的，它可以指定只有当 start 变化时，才允许重新计算新的 result 。
+
+另外的一个例子,对于无状态组件，数据更新就等于函数上下文的重复执行。那么函数里面的变量，方法就会重新声明。比如如下情况。
+
+```js
+function Index() {
+  const [number, setNumber] = useState(0);
+  const handerClick1 = () => {
+    /* 一些操作 */
+  };
+  const handerClick2 = () => {
+    /* 一些操作 */
+  };
+  const handerClick3 = () => {
+    /* 一些操作 */
+  };
+  return (
+    <div>
+      <a onClick={handerClick1}>点我有惊喜1</a>
+      <a onClick={handerClick2}>点我有惊喜2</a>
+      <a onClick={handerClick3}>点我有惊喜3</a>
+      <button onClick={() => setNumber(number + 1)}> 点击 {number} </button>
+    </div>
+  );
+}
+```
+
+每次点击 `button` 的时候,都会执行 `Index函数`。`handerClick1` , `handerClick2`, `handerClick3`都会重新声明。为了避免这个情况的发生，我们可以用 `useMemo` 做缓存，我们可以改成如下：
+
+```js
+function Index() {
+  const [number, setNumber] = useState(0);
+  const [handerClick1, handerClick2, handerClick3] = useMemo(() => {
+    const fn1 = () => {
+      /* 一些操作 */
+    };
+    const fn2 = () => {
+      /* 一些操作 */
+    };
+    const fn3 = () => {
+      /* 一些操作 */
+    };
+    return [fn1, fn2, fn3];
+  }, []); /* 只有当数据里面的依赖项，发生改变的时候，才会重新声明函数。 */
+  return (
+    <div>
+      <a onClick={handerClick1}>点我有惊喜1</a>
+      <a onClick={handerClick2}>点我有惊喜2</a>
+      <a onClick={handerClick3}>点我有惊喜3</a>
+      <button onClick={() => setNumber(number + 1)}> 点击 {number} </button>
+    </div>
+  );
+}
+```
 
 ### 合理使用 React.useCallback
 
@@ -414,12 +505,11 @@ export default class NestedRoutingComponent extends Component {
 
 上面的代码没有额外的标记，因此节省了渲染器渲染额外元素的工作量，之前的常用做法可能是使用`<div>`包裹元素。
 
-### 不要使用内联函数定义
+### 绑定事件尽量不要使用箭头函数
 
 当我们使用`内联函数`处理事件时，每次调用 `render` 函数时都会创建一个新的函数实例。
 
-因为当 `React` 进行虚拟 DOM diff 时，它每次都会找到一个新的函数实例，因此在`渲染阶段`它会绑定新函数并将旧实例扔给垃圾回收，这样就导致了
-额外做垃圾回收和绑定到 DOM 的新函数的工作，带来了不必要的性能浪费。
+因为当 `React` 进行`虚拟 DOM diff` 时，它每次都会找到一个新的函数实例，因此在`渲染阶段`它会绑定新函数并将旧实例扔给垃圾回收，这样就导致了额外做垃圾回收和绑定到 DOM 的新函数的工作，带来了不必要的性能浪费。
 
 ```js
 import React from 'react';
@@ -442,7 +532,7 @@ export default class InlineFunctionComponent extends React.Component {
 }
 ```
 
-上面的函数创建了`内联函数(即函数体直接书写在render函数中)`。每次调用 render 函数时都会创建一个函数的新实例，render 函数会将该函数的新实例绑定到该按钮。
+上面的函数创建了`内联函数(即函数体直接书写在render函数中)`。每次调用 `render` 函数时都会创建一个函数的新实例，`render` 函数会将该函数的新实例绑定到该按钮，如果是在子组件上绑定的，那么子组件每次都会更新。
 
 推荐的方式如下:
 

@@ -148,7 +148,15 @@ TIFF（Tag Image File Format）图像文件是图形图像处理中常用的格�
 
 ## webp 技术支持状况
 
+### H5 支持情况
+
 ![webp 技术支持状况](https://cdn.weipaitang.com/static/202201059d84f8a0-1cfc-f8a01cfc-5f3d-c6ab09af0c72-W1167H634)
+
+### 小程序支持情况
+
+![小程序侧支持情况](https://img-blog.csdnimg.cn/cb48930f7c8e49c78a8e26d45d06c0d0.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAeGpsMjcxMzE0,size_20,color_FFFFFF,t_70,g_se,x_16)
+
+### H5 检测方案
 
 - 使用 canvas 进行检测
 
@@ -197,6 +205,10 @@ TIFF（Tag Image File Format）图像文件是图形图像处理中常用的格�
     img.src = 'data:image/webp;base64,' + kTestImages[feature];
   }
   ```
+
+- 通过请求头判断
+
+  判断请求头的`Accept`字段里是否含有 `image/webp` 字段。
 
 ## 优化方案
 

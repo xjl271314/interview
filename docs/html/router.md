@@ -174,7 +174,7 @@ import React from 'react';
 import { Info } from 'interview';
 
 const txt =
-  '注意，移动到以前访问过的页面时，页面通常是从浏览器缓存之中加载，而不是重新要求服务器发送新的网页。';
+  '\n注意，移动到以前访问过的页面时，页面通常是从浏览器缓存之中加载，而不是重新要求服务器发送新的网页。';
 
 export default () => <Info type="warning" txt={txt} />;
 ```
@@ -215,7 +215,7 @@ import React from 'react';
 import { Info } from 'interview';
 
 const txt =
-  '注意：如果 `pushState` 的 `URL` 参数设置了一个新的锚点值（即 hash），并不会触发 `hashchange` 事件。反过来，如果 `URL` 的锚点值变了，则会在 `History` 对象创建一条浏览记录。\n\n如果 `pushState()` 方法设置了一个`跨域网址`，则会报错。';
+  '\n注意：如果 `pushState` 的 `URL` 参数设置了一个新的锚点值（即 hash），并不会触发 `hashchange` 事件。反过来，如果 `URL` 的锚点值变了，则会在 `History` 对象创建一条浏览记录。\n\n如果 `pushState()` 方法设置了一个`跨域网址`，则会报错。';
 
 export default () => <Info type="warning" txt={txt} />;
 ```
@@ -260,7 +260,7 @@ history.go(2);
 
 - 仅仅调用 `pushState()`方法或 `replaceState()`方法 ，并不会触发该事件;
 
-- 只有当用户点击浏览器倒退按钮和前进按钮，或者使用 `JavaScript` 调用 `History.back()`、`History.forward()`、`History.go()`方法时才会触发。
+- 只有当用户点击浏览器倒退按钮和前进按钮，或者使用 `JavaScript` 调用 `history.back()`、`history.forward()`、`history.go()`方法时才会触发。
 
 - 另外，该事件只针对同一个文档，如果浏览历史的切换，导致加载不同的文档，该事件也不会触发。
 

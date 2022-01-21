@@ -34,7 +34,7 @@ export default defineConfig({
     '@info-text-color': '#999',
     '@warning-background-color': 'rgba(255,229,100,.3)',
     '@warning-border-color': '#e7c000',
-    '@warning-text-color': '#6b5900',
+    '@warning-text-color': '#6b5900!important',
     '@warning-dark-text-color': '#FFF',
     '@error-background-color': '#FFF',
     '@error-border-color': '#FF4B2B',

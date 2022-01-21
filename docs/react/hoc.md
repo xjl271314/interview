@@ -234,3 +234,111 @@ export function debugerHOC(WrappedComponent) {
 ```
 
 这里 `HOC` 用其他元素包裹着 `WrappedComponent`，还输出了 `WrappedComponent` 实例的 `props` 和 `state`。
+
+## HOC 高级使用
+
+### 节流渲染
+
+- 2022.01.19
+
+`HOC` 可以配合`hooks`的`useMemo`等`API`配合使用，可以实现对业务组件的渲染控制，减少渲染次数，从而达到优化性能的效果。
+
+如下案例，我们期望当且仅当`num`改变的时候，渲染组件，但是不影响接收的`props`。我们应该这样写我们的 HOC。
+
+```jsx
+import React, { useState, useMemo } from 'react';
+import { Button, Space } from 'antd';
+
+function HOC(Component) {
+  return function renderWrapComponent(props) {
+    const { num } = props;
+    const RenderElement = useMemo(() => <Component {...props} />, [num]);
+    return RenderElement;
+  };
+}
+
+class Index extends React.Component {
+  render() {
+    console.log(`当前组件是否渲染`, this.props);
+    return <div>hello {this.props.num}</div>;
+  }
+}
+
+const IndexHoc = HOC(Index);
+
+export default () => {
+  const [num, setNumber] = useState(0);
+  const [num1, setNumber1] = useState(0);
+  const [num2, setNumber2] = useState(0);
+
+  return (
+    <div>
+      <Space direction="vertical">
+        <IndexHoc num={num} num1={num1} num2={num2} />
+        <Space>
+          <Button onClick={() => setNumber(num + 1)}>num++</Button>
+          <Button type="primary" onClick={() => setNumber1(num1 + 1)}>
+            num1++
+          </Button>
+          <Button type="danger" onClick={() => setNumber2(num2 + 1)}>
+            num2++
+          </Button>
+        </Space>
+      </Space>
+    </div>
+  );
+};
+```
+
+当我们只有点击 `num++` 时候，才重新渲染子组件，点击其他按钮，只是负责传递了`props`,达到了期望的效果。
+
+但是上述的方案无法在实际项目中使用，我们需要针对不同`props`变化，写不同的`HOC`组件。
+
+接下来我们进行改造。让 HOC 可支持定制化渲染。
+
+```jsx
+import React, { useState, useMemo } from 'react';
+import { Button, Space } from 'antd';
+
+function HOC(dependence) {
+  return function (Component) {
+    return function renderWrapComponent(props) {
+      const dep = dependence(props);
+      const RenderElement = useMemo(() => <Component {...props} />, [dep]);
+
+      return RenderElement;
+    };
+  };
+}
+
+@HOC((props) => props['num1'])
+class Index extends React.Component {
+  render() {
+    console.log(`自定义封装HOC渲染`, this.props);
+    return <div>hello {this.props.num1}</div>;
+  }
+}
+
+export default () => {
+  const [num, setNumber] = useState(0);
+  const [num1, setNumber1] = useState(0);
+  const [num2, setNumber2] = useState(0);
+
+  return (
+    <div>
+      <Space direction="vertical">
+        <Index num={num} num1={num1} num2={num2} />
+        <Space>
+          <Button onClick={() => setNumber(num + 1)}>num++</Button>
+          <Button type="primary" onClick={() => setNumber1(num1 + 1)}>
+            num1++
+          </Button>
+          <Button type="danger" onClick={() => setNumber2(num2 + 1)}>
+            num2++
+          </Button>
+        </Space>
+      </Space>
+    </div>
+  );
+};
+```
