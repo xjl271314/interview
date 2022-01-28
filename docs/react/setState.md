@@ -15,7 +15,7 @@ group:
 
 ## React 中 setState 是同步还是异步的?
 
-> 首先 React 中的 setState 是异步的，定义为异步不是说该方法本身就是异步的，实际上是同步模式只是看起来像异步。
+> 首先在`原生 DOM 事件`和 `setTimeout` 等原生里面，`setState` 是同步更新的，其余的地方 `setState` 是异步的，定义为异步不是说该方法本身就是异步的，实际上是同步模式只是看起来像异步。
 
 ```js
 import React, { Component } from 'react';

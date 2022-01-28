@@ -41,7 +41,7 @@ group:
 
 ### asynchronously
 
-> 英 [eɪˈsɪŋkrənəsli] [在线翻译](https://dict.youdao.com/w/asynchronously/#keyfrom=dict2.top)
+> 英 [eɪˈsɪŋkrənəsli] 美 [eɪˈsɪŋkrənəsli] [在线翻译](https://dict.youdao.com/w/asynchronously/#keyfrom=dict2.top)
 
 - adj. 异步的;
 
@@ -118,3 +118,69 @@ group:
 > 英 [səˈspens] 美 [səˈspens] [在线翻译](http://dict.youdao.com/w/suspense/#keyfrom=dict2.top)
 
 - n. 焦虑，悬念，兴奋；<法律> 暂停，权利中止
+
+### concepts
+
+> 英 [ˈkɒnsepts] [在线翻译](http://dict.youdao.com/w/concepts/#keyfrom=dict2.top)
+
+- n. 概念，观念；思想（concept 复数形式）
+
+1. core concepts 核心概念
+
+### comparisons
+
+> 英 [kəm'pærəsnz] 美 [kəm'pærəsnz] [在线翻译](http://dict.youdao.com/w/%20comparisons/#keyfrom=dict2.top)
+
+- n. 比较；类似（comparison 的复数形式）；处于对比状态
+
+1. Comparisons are odious 人比人气死人
+
+### declarative
+
+> 英 [dɪˈklærətɪv] 美 [dɪˈklærətɪv] [在线翻译](http://dict.youdao.com/w/declarative/#keyfrom=dict2.top)
+
+- adj. 公告的，宣言的；陈述的，叙述的
+
+### manipulate
+
+> 英 [məˈnɪpjuleɪt] 美 [məˈnɪpjuleɪt] [在线翻译](http://dict.youdao.com/w/manipulate/#keyfrom=dict2.top)
+
+- v. 操纵，摆布；操作，使用；正骨，推拿；篡改；巧妙地移动（某物），巧妙地处理（某事）；校正，转移（储存在计算机上的信息）
+
+### visualizing
+
+> 英 ['vizjuəlaiziŋ] 美 [ˈvɪʒuəlaɪzɪŋ] [在线翻译](http://dict.youdao.com/w/visualizing/#keyfrom=dict2.top)
+
+- n. 肉眼观察
+
+1. Visualizing Data 可视化数据
+2. Visualizing the Future 可视化的未来
+
+### aisle
+
+> 英 [aɪl] 美 [aɪl] [在线翻译](http://dict.youdao.com/w/aisle/#keyfrom=dict2.top)
+
+- n. 走廊，过道；（教堂）耳堂，侧堂[复数 aisles]
+
+### diagram
+
+> 英 [ˈdaɪəɡræm] 美 [ˈdaɪəɡræm] [在线翻译](http://dict.youdao.com/w/%20diagram/#keyfrom=dict2.top)
+
+- n. 图表，图解；几何图形
+- v. 以图表示
+
+1. block diagram [计] 方块图 ;
+2. Sequence Diagram 时序图 ; 序列图 ; 顺序图 ; 循序图
+3. Scatter Diagram [统计] 散布图 ; 散点图 ; 散布图分析 ; 分布图
+4. state diagram [统计] 状态图 ; 状态转换图 ; 状况图
+5. ladder diagram [计] 梯形图 ; 梯形图 LAD
+6. component diagram 组件图 ; 构件图 ; 元件图 ; 组件框图
+
+### synonym
+
+> 英 [ˈsɪnənɪm] 美 [ˈsɪnənɪm] [在线翻译](http://dict.youdao.com/w/synonym/#keyfrom=dict2.top)
+
+- n. 同义词；代名词，换喻词；（分类学中的）同物异名[ 复数 synonyms ]
+
+1. local synonym 或本地近义字 ; 或当地近义字 ; 远义字
+2. near-synonym 近义词 ; 近似同义词

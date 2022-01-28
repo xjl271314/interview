@@ -64,8 +64,9 @@ person.sayYourName(); // I am Kevin
 ```js
 // 第一版代码
 function objectFactory() {
-  var obj = new Object(),
-    Constructor = [].shift.call(arguments);
+  const obj = new Object();
+  // 删除并拿到arguments的第一项
+  const Constructor = [].shift.call(arguments);
 
   obj.__proto__ = Constructor.prototype;
 
@@ -77,11 +78,11 @@ function objectFactory() {
 
 在这一版中，我们：
 
-- 用 `new Object()` 的方式新建了一个对象 `obj`
-- 取出第一个参数，就是我们要传入的构造函数。此外因为 `shift` 会修改原数组，所以 `arguments` 会被去除第一个参数
-- 将 `obj` 的原型指向`构造函数`，这样 `obj` 就可以访问到构造函数原型中的属性
-- 使用 `apply`，改变构造函数 `this` 的指向到新建的对象，这样 `obj` 就可以访问到构造函数中的属性
-- 返回 `obj`
+- 用 `new Object()` 的方式新建了一个对象 `obj`;
+- 取出第一个参数，就是我们要传入的构造函数。此外因为 `shift` 会修改原数组，所以 `arguments` 会被去除第一个参数;
+- 将 `obj` 的原型指向`构造函数`，这样 `obj` 就可以访问到构造函数原型中的属性;
+- 使用 `apply` 改变构造函数 `this` 的指向到新建的对象，这样 `obj` 就可以访问到构造函数中的属性;
+- 返回 `obj`;
 
 ## 考虑返回值
 
