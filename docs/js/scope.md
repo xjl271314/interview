@@ -294,7 +294,7 @@ import React from 'react';
 import { Info } from 'interview';
 
 const txt =
-  '`函数声明`和`函数表达式`，最简单的区分方法，就是看是不是 `function` 关键字开头：是 `function` 开头的就是`函数声明`，否则就是`函数表达式`。';
+  '\n`函数声明`和`函数表达式`，最简单的区分方法，就是看是不是 `function` 关键字开头：是 `function` 开头的就是`函数声明`，否则就是`函数表达式`。';
 
 export default () => <Info type="info" txt={txt} />;
 ```

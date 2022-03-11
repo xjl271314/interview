@@ -89,7 +89,7 @@ const a = 3,b = 4;
 
 ## 使用 uglify.js
 
-上述提供了几种压缩的思路，其实在前端项目中[uglify.js](https://github.com/mishoo/UglifyJS)都已经帮我们处理好了。
+上述提供了几种压缩的思路，其实在前端项目中[uglify.js](https://github.com/mishoo/UglifyJS)都已经帮我们处理好了，但是这里需要注意 `uglify.js`本身是不支持压缩 `ES6` 代码的。
 
 `webpack` 中内置的代码压缩插件就是使用了它，它的工作流程大致如下：
 

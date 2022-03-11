@@ -1,5 +1,5 @@
 ---
-title: JSON
+title: JSON数据
 nav:
   title: javascript
   path: /javascript

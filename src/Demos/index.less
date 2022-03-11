@@ -1,0 +1,24 @@
+.main .p {
+  color: green;
+}
+
+:is(.main) .p {
+  color: purple;
+}
+
+:where(.main) .p {
+  color: red;
+}
+
+.p {
+  color: blue;
+}
+
+// has选择器
+section:has(h1) {
+  color: aquamarine;
+}
+
+ul li:not(:last-child) {
+  color: gray;
+}

@@ -30,7 +30,7 @@ var n = str.charAt(2); // L
 
 ### charCodeAt()
 
-> charCodeAt(index) 返回指定索引位置字符的 Unicode 值。
+> charCodeAt(index) 返回指定索引位置字符的 Unicode 值，如果没有的话会返回 NaN。
 
 | 参数名 | 是否必填 | 参数描述       |
 | :----- | :------: | :------------- |
@@ -39,6 +39,7 @@ var n = str.charAt(2); // L
 ```js
 var str = 'HELLO WORLD';
 var n = str.charCodeAt(0); // 72
+var nu = str.charCodeAt(-1); // NaN
 ```
 
 ### fromCharCode()
