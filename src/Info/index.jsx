@@ -33,6 +33,8 @@ export default ({ type = 'info', title = '', txt }) => {
     if (!title && type === 'error') {
       return '错误❌';
     }
+
+    return title;
   }, [title, type]);
 
   return (

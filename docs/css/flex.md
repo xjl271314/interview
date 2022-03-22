@@ -128,9 +128,67 @@ group:
 }
 ```
 
+## flex-grow
+
+> flex-grow：定义项目的的放大比例；默认为 0，即 即使存在剩余空间，也不会放大；
+
+- 所有项目的`flex-grow`为 1：等分剩余空间（自动放大占位）；
+- `flex-grow`为`n`的项目，占据的空间（放大的比例）是`flex-grow`为`1`的`n`倍。
+
+父容器剩余空间按 `1:2` 的比例分配给子容器。
+
+```css
+.wrap {
+  display: flex;
+  .div1 {
+    flex-grow: 1;
+  }
+  .div2 {
+    flex-grow: 2;
+  }
+}
+```
+
+![flex-grow](https://img-blog.csdnimg.cn/20210611163714300.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3hqbDI3MTMxNA==,size_16,color_FFFFFF,t_70)
+
+## flex-shrink
+
+> flex-shrink：定义项目的缩小比例；默认为 1，即 如果空间不足，该项目将缩小；
+
+- 所有项目的`flex-shrink`为 1：当空间不足时，缩小的比例相同；
+- `flex-shrink`为 0：空间不足时，该项目不会缩小；
+- `flex-shrink`为`n`的项目，空间不足时缩小的比例是`flex-shrink`为`1`的`n`倍。
+
+子容器超出的部分按 1:2 的比例从子容器中减去
+
+```css
+.wrap {
+  display: flex;
+  width: 100px;
+  .div1,
+  .div2 {
+    flex-basis: 200px;
+    // 设置基础宽度，且超出父容器宽度
+  }
+  .div1 {
+    flex-shrink: 1;
+  }
+  .div2 {
+    flex-shrink: 2;
+  }
+}
+```
+
+![flex-shrink](https://img-blog.csdnimg.cn/20210611163920963.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3hqbDI3MTMxNA==,size_16,color_FFFFFF,t_70)
+
 ## flex-basis
 
-> 在不伸缩的情况下子容器的原始尺寸。主轴为横向时代表宽度，主轴为纵向时代表高度。
+> 定义在分配多余空间之前，项目占据的主轴空间（main size），浏览器根据此属性计算主轴是否有多余空间。
+
+- 默认值为 auto，即 项目原本大小；
+- 设置后项目将占据固定空间。
+
+在不伸缩的情况下子容器的原始尺寸。主轴为横向时代表宽度，主轴为纵向时代表高度。
 
 ```css
 .wrap {
@@ -152,47 +210,9 @@ group:
 }
 ```
 
-## flex-grow
+## flex: 1
 
-> 父容器剩余空间按 1:2 的比例分配给子容器。
-
-```css
-.wrap {
-  display: flex;
-  .div1 {
-    flex-grow: 1;
-  }
-  .div2 {
-    flex-grow: 2;
-  }
-}
-```
-
-![flex-grow](https://img-blog.csdnimg.cn/20210611163714300.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3hqbDI3MTMxNA==,size_16,color_FFFFFF,t_70)
-
-## flex-shrink
-
-> 子容器超出的部分按 1:2 的比例从子容器中减去
-
-```css
-.wrap {
-  display: flex;
-  width: 100px;
-  .div1,
-  .div2 {
-    flex-basis: 200px;
-    // 设置基础宽度，且超出父容器宽度
-  }
-  .div1 {
-    flex-shrink: 1;
-  }
-  .div2 {
-    flex-shrink: 2;
-  }
-}
-```
-
-![flex-shrink](https://img-blog.csdnimg.cn/20210611163920963.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3hqbDI3MTMxNA==,size_16,color_FFFFFF,t_70)
+> flex: 1 实际上是 `flex-grow`、`flex-shrink` 和 `flex-basis` 三个属性的缩写。
 
 ## align-self
 

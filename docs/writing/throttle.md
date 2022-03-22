@@ -1,5 +1,5 @@
 ---
-title: 节流和防抖
+title: 手写节流和防抖
 nav:
   title: 编程题
   path: /writing
