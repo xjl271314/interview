@@ -157,3 +157,35 @@ node --inspect-brk=0.0.0.0:8080 index.js
    可以看到，根本不需要关心具体的 key，它去拦截的是 「修改 data 上的任意 key」 和 「读取 data 上的任意 key」。
 
    所以，不管是已有的 key 还是新增的 key，都逃不过它的魔爪。
+
+## 13. escape、encodeURI、encodeURIComponent 区别？
+
+### escape()
+
+通常用于对字符串编码，不适用于对 URL 编码。
+
+除了 ASCII 字母、数字和特定的符号外，对传进来的字符串全部进行转义编码，因此如果想对 URL 编码，最好不要使用此方法。
+
+escape 不会编码的字符有 69 个：`* + - . / @ _ 0-9 a-z A-Z`。
+
+当然如果没有必要，不要使用 escape。
+
+### encodeURI()
+
+`encodeURI()`不会进行编码的字符有 `82` 个 ：`; , / ? : @ & = + $ - _ . ! ~ * ' ( ) # 0-9 a-z A-Z`
+
+使用`encodeURI()`编码后的结果是除了空格之外的其他字符都原封不动，只有空格被替换成了`%20`，`encodeURI`主要用于直接赋值给地址栏。
+
+### encodeURIComponent()
+
+`encodeURIComponent`:不会进行编码的字符有 71 个：`! ' ( ) * - . _ ~ 0-9 a-z A-Z`;
+
+`encodeURIComponent` 比 `encodeURI` 编码的范围更大，如 `encodeURIComponent` 会把 `http://` 编码成 `http%3A%2F%2F` 而 `encodeURI` 不解码维持 `http://`。
+
+`encodeURIComponent()` 方法在编码单个 `URIComponent`（指请求参数）应当是最常用的，它可以将参数中的中文、特殊字符进行转义，而不会影响整个 URL
+
+### 如何选择和使用三个函数?
+
+- 如果只是编码字符串，和 URL 没有关系，才可以用 escape。（但它已经被废弃，尽量避免使用，应用 encodeURI 或 encodeURIComponent）;
+- 如果需要编码整个 URL，然后需要使用这个 URL，那么用 encodeURI;
+- 如果需要编码 URL 中的参数的时候，那么 encodeURIComponent 是最好方法。

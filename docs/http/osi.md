@@ -14,7 +14,7 @@ group:
 
 ## 模型总览
 
-![OSI七层网络模型](https://img-blog.csdnimg.cn/49f0370775da4b10a96549b80d05c05b.png?x-oss-process=image,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAeGpsMjcxMzE0,size_20,color_FFFFFF,t_70,g_se,x_16)
+![OSI七层网络模型](https://img-blog.csdnimg.cn/69f5bb8068a948ee8955f2717c7a5cc6.png?x-oss-process=image,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAeGpsMjcxMzE0,size_20,color_FFFFFF,t_70,g_se,x_16)
 
 ## 物理层
 
