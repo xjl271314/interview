@@ -329,3 +329,31 @@ group:
 
 - React DOM
   - Remove an unused dependency to address the SharedArrayBuffer cross-origin isolation warning. (@koba04 and @bvaughn in [#20831](https://github.com/facebook/react/pull/20831), [#20832](https://github.com/facebook/react/pull/20832), and [#20840](https://github.com/facebook/react/pull/20840))
+
+## 18.0.0
+
+[v18.0.0](https://github.com/facebook/react/blob/main/CHANGELOG.md)
+
+- React
+
+  - `useId` is a new hook for generating unique IDs on both the client and server, while avoiding hydration mismatches. It is primarily useful for component libraries integrating with accessibility APIs that require unique IDs. This solves an issue that already exists in React 17 and below, but it’s even more important in React 18 because of how the new streaming server renderer delivers HTML out-of-order.
+
+  - `startTransition` and `useTransition` let you mark some state updates as not urgent. Other state updates are considered urgent by default. React will allow urgent state updates (for example, updating a text input) to interrupt non-urgent state updates (for example, rendering a list of search results).
+
+  - `useDeferredValue` lets you defer re-rendering a non-urgent part of the tree. It is similar to debouncing, but has a few advantages compared to it. There is no fixed time delay, so React will attempt the deferred render right after the first render is reflected on the screen. The deferred render is interruptible and doesn't block user input.
+
+  - `useSyncExternalStore` is a new hook that allows external stores to support concurrent reads by forcing updates to the store to be synchronous. It removes the need for useEffect when implementing subscriptions to external data sources, and is recommended for any library that integrates with state external to React.
+
+  - `useInsertionEffect` is a new hook that allows CSS-in-JS libraries to address performance issues of injecting styles in render. Unless you’ve already built a CSS-in-JS library we don’t expect you to ever use this. This hook will run after the DOM is mutated, but before layout effects read the new layout. This solves an issue that already exists in React 17 and below, but is even more important in React 18 because React yields to the browser during concurrent rendering, giving it a chance to recalculate layout.
+
+- React DOM Client
+
+  - `createRoot`: New method to create a root to render or unmount. Use it instead of ReactDOM.render. New features in React 18 don't work without it.
+
+  - `hydrateRoot`: New method to hydrate a server rendered application. Use it instead of ReactDOM.hydrate in conjunction with the new React DOM Server APIs. New features in React 18 don't work without it.
+
+- React DOM Server
+
+  - `renderToPipeableStream`: for streaming in Node environments.
+
+  - `renderToReadableStream`: for modern edge runtime environments, such as Deno and Cloudflare workers.

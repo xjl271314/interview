@@ -189,3 +189,364 @@ escape 不会编码的字符有 69 个：`* + - . / @ _ 0-9 a-z A-Z`。
 - 如果只是编码字符串，和 URL 没有关系，才可以用 escape。（但它已经被废弃，尽量避免使用，应用 encodeURI 或 encodeURIComponent）;
 - 如果需要编码整个 URL，然后需要使用这个 URL，那么用 encodeURI;
 - 如果需要编码 URL 中的参数的时候，那么 encodeURIComponent 是最好方法。
+
+## 14.为什么 17 之前每个页面都需要 import React from 'react';?
+
+`JSX`在编译时会被`Babel`编译为`React.createElement`方法。
+
+如果不显示声明的话，在运行时该模块内就会报未定义变量 `React`的错误。
+
+## 15.跨域请求如何携带 cookie?
+
+1. 前端请求时在`request对象`中配置`withCredentials: true`；
+2. 服务端在`response`的`header`中配置`Access-Control-Allow-Origin, http://xxx:${port}`;
+3. 服务端在`response`的`header`中配置`"Access-Control-Allow-Credentials", "true"`。
+
+## 16. javascript 有哪些数据类型?
+
+### 基本数据类型
+
+1. `undefined`
+2. `null`
+3. `number`
+4. `string`
+5. `boolean`
+6. `symbol`(ES6 中加入的变量类型)
+7. `bigInt`(ES10 中加入的变量类型)
+
+### 引用数据类型
+
+1. object
+
+### 值的存储
+
+- 基本数据类型的值是存储在`栈`中的简单数据。
+- 引用数据类型是存储在`堆(内存)`中的对象。
+
+与其他语言不同，`JavaScript`不允许直接访问内存中的位置，也就是说不能直接操作对象的内存空间。
+
+- 当复制保存着对象的某个变量时，操作的是`对象的引用`。
+
+- 但在为对象添加属性时，操作的是`实际的对象`。
+
+## 17. 装箱和拆箱是什么?
+
+- 装箱转换：把`基本类型`转换为对应的`包装类型`。
+- 拆箱操作：把`引用类型`转换为`基本类型`。
+
+### 自动装箱和拆箱
+
+`原始类型`是不能扩展属性和方法，那么我们是如何使用`原始类型`调用方法的呢？
+
+**每当我们操作一个基础类型时，后台就会自动创建一个包装类型的对象，从而让我们能够调用一些方法和属性，例如下面的代码**：
+
+```js
+const name = 'Linda';
+const name2 = name.substring(2);
+```
+
+上述代码的执行过程:
+
+1. 创建一个 `String` 的包装类型实例.
+2. 在实例上调用 `substring` 方法.
+3. 销毁实例.
+
+也就是说，我们使用`基本类型调用方法`，就会自动进行 `装箱` 和 `拆箱` 操作，相同的，我们使用 `Number` 和 `Boolean` 类型时，也会发生这个过程。
+
+## 18. valueOf 和 toString 有什区别?
+
+- 引用类型转换为 `Number` 类型，先调用 `valueOf`，再调用 `toString`。
+- 引用类型转换为 `String` 类型，先调用 `toString`，再调用 `valueOf`。
+
+若 `valueOf` 和 `toString` 都不存在，或者没有返回基本类型，则抛出 `TypeError` 异常。
+
+## 19. parseInt 与 parseFloat
+
+### parseInt
+
+`parseInt` 会忽略字符串前面的空格，直至找到第一个**非空格字符**。如果第一个字符不是`数字字符`或者`负号`，`parseInt()` 就会返回 `NaN`，也就是说，用 `parseInt()` 转换空字符串会返回 `NaN`。
+
+```js
+parseInt(''); //NaN
+Number(''); //0
+```
+
+如果第一个字符是数字字符，`parseInt()` 会继续解析第二个字符，直到解析完所有后续字符或者遇到了一个非数字字符。
+
+```js
+var num1 = parseInt('1234blue'); // 1234
+var num2 = parseInt(''); // NaN
+var num4 = parseInt(22.5); // 22
+var num3 = parseInt('0xA'); // 10（十六进制数）
+var num5 = parseInt('070'); // 56（八进制数）
+var num6 = parseInt('70'); // 70（十进制数）
+```
+
+### parseFloat
+
+与 `parseInt()` 函数类似，`parseFloat()` 也是从第一个字符开始解析每个字符。而且也是一直解析到字符串末尾，或者解析到遇见一个无效的浮点数字字符为止，但其只能解析十进制值，因此它没有用第二个参数指定基数的用法。
+
+```js
+var num1 = parseFloat('1234blue'); // 1234 （整数）
+var num2 = parseFloat('0xA'); // 0 在parseInt中的返回值是10
+var num3 = parseFloat('22.5'); // 22.5
+var num4 = parseFloat('22.34.5'); // 22.34
+var num5 = parseFloat('0908.5'); // 908.5
+var num6 = parseFloat('3.125e7'); // 31250000
+```
+
+## 20. toString() 和 String() 有什么区别?
+
+### 共同
+
+两者都是用于将其他类型转化为字符串类型。
+
+### 区别
+
+- `Number`、`Boolean`、`Object` 和 `String` 类型都有 `toString()`方法。但 `null` 和 `undefined` 值没有这个方法。
+
+- `Number类型`调用 `toString()` 方法时，可以传递一个参数：**输出数值的基数**。
+
+  ```js
+  var num = 10;
+  alert(num.toString()); // "10"
+  alert(num.toString(2)); // "1010"
+  alert(num.toString(8)); // "12"
+  alert(num.toString(10)); // "10"
+  alert(num.toString(16)); // "a"
+  ```
+
+- `String()`函数遵循下列转换规则：
+
+  - 如果值有 `toString()`方法，则调用该方法（没有参数）并返回相应的结果；
+  - 如果值是`null`，则返回`"null"`；
+  - 如果值是`undefined`，则返回`"undefined"`。
+
+  ```js
+  var value1 = 10;
+  var value2 = true;
+  var value3 = null;
+  var value4;
+  alert(String(value1)); // "10"
+  alert(String(value2)); // "true"
+  alert(String(value3)); // "null"
+  alert(String(value4)); // "undefined"
+  ```
+
+## 21. `Object` 的每个实例都有哪些方法和属性?
+
+- `constructor`：保存着用于创建当前对象的函数。对于`const obj = new Object();`而言，就是`Object()`。
+- `hasOwnProperty(propertyName)`：用于检查给定的属性在当前对象实例中（而不是在实例的原型中)是否存在。 其中，作为参数的属性`propertyName`必须以**字符串**形式指定（例如：`obj.hasOwnProperty("name")`)。
+
+- `isPrototypeOf(object)`：用于检查传入的对象是否是传入对象的原型。
+
+- `propertyIsEnumerable(propertyName)`：用于检查给定的属性是否能够使用`for-in`语句来枚举。与 `hasOwnProperty()`方法一样，作为参数的属性名必须以**字符串**形式指定。
+
+- `toLocaleString()`：返回对象的字符串表示，该字符串与执行环境的地区对应。
+
+- `toString()`：返回对象的字符串表示。
+
+- `valueOf()`：返回对象的字符串、数值或布尔值表示。通常与`toString()`方法的返回值相同。
+
+由于在 `ECMAScript` 中 `Object` 是所有对象的基础，因此所有对象都具有这些基本的属性和方法。
+
+## 22. 控制语句的 Completion Record 机制
+
+js 中表示一个语句执行完成之后的结果，它有 3 个字段:
+
+- `type`: 表示完成的类型，有`break`、`continue`、`return`、`throw`和 `normal` 几种类型。
+
+- `value`: 表示语句的返回值，如果语句没有返回值，则是 empty。
+
+- `target`: 表示语句的目标，通常是一个 javascript 标签。
+
+`Javascript`正是依靠语句的`Completion Record`类型才可以在语句的复杂嵌套结构中，实现各种控制。
+
+![控制语句](https://img-blog.csdnimg.cn/20201109135343908.jpg?x-oss-process=image,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3hqbDI3MTMxNA==,size_16,color_FFFFFF,t_70#pic_center)
+
+## 23. length 属性
+
+- 函数的 length：表示函数希望接收多少个参数。
+
+  ```js
+  function a(x, y) {}
+  a.length; // 2
+  ```
+
+- 数组的 length：表示数组的长度，可以通过修改长度来控制数组的长度。
+
+  ```js
+  const arr = [1, 2, 3];
+  arr.length = 0;
+  console.log(arr); // []
+  ```
+
+- 字符串的 length：表示字符串的长度。
+
+  ```js
+  const str = '123';
+  str.length = 0;
+  console.log(str); // '123' 并不能修改，是个只读属性
+  ```
+
+## 24. 数据属性和访问器属性
+
+### 数据属性
+
+数据属性包含一个数据值的位置。在这个位置可以读取和写入值。数据属性有 4 个描述其行为的特性：
+
+- `Configurable`: 表示能否通过`delete`删除属性从而重新定义属性，能否修改属性的特性，或者能否把属性修改为访问器属性。直接在对象上定义的属性，它们的这个特性默认值为 true。
+
+- `Enumerable`: 表示能否通过 `for-in` 循环返回属性。直接在对象上定义的属性，它们的这个特性默认值为 `true`。
+
+- `Writable`: 表示能否修改属性的值。直接在对象上定义的属性，它们的这个特性默认值为 `true`。
+
+- `Value`: 包含这个属性的数据值。读取属性值的时候，从这个位置读；写入属性值的时候，把新值保存在这个位置。这个特性的默认值为 `undefined`。
+
+要修改属性默认的特性，可以使用`Object.defineProperty()`方法。
+
+```js
+// 接收三个参数：属性所在的对象、属性的名字和一个描述符对象。
+var person = {};
+Object.defineProperty(person, 'name', {
+  writable: false,
+  value: 'Nicholas',
+});
+alert(person.name); // "Nicholas"
+person.name = 'Greg';
+alert(person.name); // "Nicholas"
+```
+
+### 访问器属性
+
+访问器属性不包含数据值；它们包含一对儿 `getter` 和 `setter` 函数。
+
+- `Configurable`：表示能否通过 `delete` 删除属性从而重新定义属性，能否修改属性的特性，或者能否把属性修改为数据属性。对于直接在对象上定义的属性，这个特性的默认值为`true`。
+
+- `Enumerable`：表示能否通过 `for-in` 循环返回属性。对于直接在对象上定义的属性，这个特性的默认值为`true`。
+
+- `Get`：在读取属性时调用的函数。默认值为`undefined`。
+
+- `Set`：在写入属性时调用的函数。默认值为`undefined`。
+
+访问器属性不能直接定义，必须使用 `Object.defineProperty()`来定义。
+
+```js
+var book = {
+  _year: 2004,
+  edition: 1,
+};
+Object.defineProperty(book, 'year', {
+  get: function () {
+    return this._year;
+  },
+  set: function (newValue) {
+    if (newValue > 2004) {
+      this._year = newValue;
+      this.edition += newValue - 2004;
+    }
+  },
+});
+book.year = 2005;
+alert(book.edition); //2
+```
+
+## 25. for 循环方法详解
+
+### for ... in ...
+
+在使用 `for-in` 循环时，返回的是所有能够通过对象访问的、可枚举的（enumerated）属性，其中既包括存在于`实例中的属性`，也包括存在于`原型中的属性`。原型中不可枚举属性（即将 Enumerable 标记为 false 的属性）的实例属性也会在`for-in`循环中返回。
+
+### Object.keys()
+
+要取得对象上所有`可枚举的实例属性`，可以使用`Object.keys()`方法。这个方法接收一个对象作为参数，返回一个包含所有可枚举属性的`字符串数组`。
+
+### Object.getOwnPropertyNames()
+
+如果你想要得到所有实例属性(包含了 `constructor` )，无论它是否可枚举，都可以使 `Object.getOwnPropertyNames()` 方法。
+
+```js
+function Person() {}
+
+Person.prototype.name = 'Nicholas';
+Person.prototype.age = 29;
+Person.prototype.job = 'Software Engineer';
+Person.prototype.sayName = function () {
+  alert(this.name);
+};
+
+var keys = Object.keys(Person.prototype);
+alert(keys); // "name,age,job,sayName"
+
+var p1 = new Person();
+p1.name = 'Rob';
+p1.age = 31;
+var p1keys = Object.keys(p1);
+alert(p1keys); // "name,age"
+
+var keys = Object.getOwnPropertyNames(Person.prototype);
+alert(keys); // "constructor,name,age,job,sayName"
+```
+
+## 26. 为什么说 setTimeout 有个最小 4ms 的延迟?
+
+我们先来看一下`html standard10-13`描述中的定义:
+
+```js
+10. If timeout is less than 0, then set timeout to 0.
+11. If nesting level is greater than 5, and timeout is less than 4, then set timeout to 4.
+12. Increment nesting level by one.
+13. Let task's timer nesting level be nesting level.
+```
+
+从上面的规范可以看出来：
+
+- 如果设置的 timeout 小于 0，则设置为 0。
+- 如果嵌套的层级超过了 5 层，并且 timeout 小于 4ms，则设置 timeout 为 4ms。
+
+看似我们已经找到了问题的原因，但是各大浏览器的厂商实际上并没有按照标准的规范进行设定。
+
+在这里我们只展示 `chromium` 的 `source code`，其他 `webkit` 或 `Firefox` 自行下载查看，在 `chromium` 的 `blink` 目录下，有一个 叫做 `DOMTimer.cpp` 的文件，`online` 地址，这里也是用来设置计时器延时的地方：
+
+```c
+static const int maxIntervalForUserGestureForwarding = 1000; // One second matches Gecko.
+static const int maxTimerNestingLevel = 5;
+static const double oneMillisecond = 0.001;
+// Chromium uses a minimum timer interval of 4ms. We'd like to go
+// lower; however, there are poorly coded websites out there which do
+// create CPU-spinning loops.  Using 4ms prevents the CPU from
+// spinning too busily and provides a balance between CPU spinning and
+// the smallest possible interval timer.
+static const double minimumInterval = 0.004;
+
+double intervalMilliseconds = std::max(oneMillisecond, interval * oneMillisecond);
+if (intervalMilliseconds < minimumInterval && m_nestingLevel >= maxTimerNestingLevel)
+    intervalMilliseconds = minimumInterval;
+```
+
+代码逻辑很清晰，设置了三个常量：
+
+- maxTimerNestingLevel = 5。也就是 HTML standard 当中提到的嵌套层级。
+
+- minimumInterval = 0.004。也就是 HTML standard 当中说的最小延迟。
+
+在第二段代码中我们会看到，首先会在 延迟时间 和 `1ms` 之间取一个最大值。换句话说，在不满足嵌套层级的情况下，最小延迟时间设置为 `1ms`。
+
+在 `chromium` 的注释中，解释了为什么要设置 `minimumInterval = 4ms`。简单来讲，本身 `chromium `团队想要设置更低的延迟时间（其实他们期望达到亚毫秒级别），但是由于某些网站（比如纽约时报的网站）对 `setTimeout` 这种计时器不良的使用，设置延迟过低会导致 `CPU-spinning`，因此 `chromium` 做了些 `benchmark` 测试，选定了 `4ms` 作为其 `minimumInterval`。
+
+到这里为止，从浏览器厂商角度和 `HTML standard` 规范角度都解释了 `4ms` 的来源和其更加精确的定义，但是究竟是 `HTML standard` 先做出的设定，还是 `Chromium` 这种浏览器厂商先做出的设定。了解先后顺序的意义在于了解其背后历史，规范和厂商是如何相互促进与制衡的。
+
+`4ms`的出现是后来市场反馈`1ms`的`timer`导致 `CPU Spining`等原因，从`1ms`提升到`4ms`之后大部分机器上都不再产生此现象。以致在后续的浏览器厂商的采用了`4ms`的设定。随后`HTML standard`才进行了相关规范的设定。
+
+```jsx
+/**
+ * inline: true
+ */
+import React from 'react';
+import { Info } from 'interview';
+
+const txt =
+  '\n不同浏览器的最低时延会不一致，比如 `chrome` 的最低时延是 `1ms`。而如果 `timer` 嵌套层级很多，那么最低时延是 `4ms`。具体嵌套层级的阈值不同浏览器也不一致，HTML Standard 当中是 >5，chrome 当中是 >=5。';
+
+export default () => <Info title="总结" txt={txt} />;
+```

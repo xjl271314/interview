@@ -1,5 +1,5 @@
 ---
-title: react hooks核心原理与使用
+title: Hooks核心原理与使用
 nav:
   title: React
   path: /react
@@ -44,6 +44,10 @@ group:
 2. **只在 React 函数中调用 Hook.**
 
    类似 `useState` 这样的钩子函数只能够在函数式组件中使用，不能用在 `class` 组件内。
+
+## 代数效应
+
+代数效应是函数式编程中的一个概念，用于将副作用从函数调用中分离。
 
 ## 官方 Hooks
 

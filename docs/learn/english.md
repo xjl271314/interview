@@ -184,3 +184,14 @@ group:
 
 1. local synonym 或本地近义字 ; 或当地近义字 ; 远义字
 2. near-synonym 近义词 ; 近似同义词
+
+### squash
+
+> 英 [skwɒʃ] 美 [skwɑːʃ] [在线翻译](http://dict.youdao.com/w/squash/#keyfrom=dict2.top)
+
+- v. 压扁，压碎；（使）挤进，（把……）塞进；打断，制止，去除；控制，抑制（情绪）
+- n. （软式）墙网球，壁球；<英>果汁饮料；南瓜属植物（如南瓜）；拥挤的环境（或处所）；（生）（供显微镜观察用的）软化组织薄片，压片；咯吱声。
+
+1. long crooked squash 菜瓜 ; 酱瓜 ; 地瓜
+2. summer squash [园艺] 西葫芦 ; 绿西葫芦 ; 夏南瓜 ; 夏天南瓜
+3. Orange Squash 橘子汁 ; 橙汁汽水 ; 桔子水

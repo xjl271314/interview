@@ -140,3 +140,49 @@ let newVDOM = {
 到了这里我们比较不同的算法通过三种优化策略，将复杂度优化到了 `O(n)`，然后我们只用生成的差异对象，去做 DOM 的更新，而不是完全去渲染整个 DOM。
 
 另外 React 会进行一个事件的批处理操作，将多次更新合并成一次，这样子能近一步减少重排的次数，提高渲染的效率和用户体验。
+
+## Diff 是如何实现的
+
+我们从 Diff 的入口函数`reconcileChildFibers`出发，该函数会根据`newChild`（即 JSX 对象）类型调用不同的处理函数。
+
+```js
+// 根据newChild类型选择不同diff函数处理
+function reconcileChildFibers(
+  returnFiber: Fiber,
+  currentFirstChild: Fiber | null,
+  newChild: any,
+): Fiber | null {
+  const isObject = typeof newChild === 'object' && newChild !== null;
+
+  if (isObject) {
+    // object类型，可能是 REACT_ELEMENT_TYPE 或 REACT_PORTAL_TYPE
+    switch (newChild.$$typeof) {
+      case REACT_ELEMENT_TYPE:
+      // 调用 reconcileSingleElement 处理
+      // // ...省略其他case
+    }
+  }
+
+  if (typeof newChild === 'string' || typeof newChild === 'number') {
+    // 调用 reconcileSingleTextNode 处理
+    // ...省略
+  }
+
+  if (isArray(newChild)) {
+    // 调用 reconcileChildrenArray 处理
+    // ...省略
+  }
+
+  // 一些其他情况调用处理函数
+  // ...省略
+
+  // 以上都没有命中，删除节点
+  return deleteRemainingChildren(returnFiber, currentFirstChild);
+}
+```
+
+我们可以从同级的节点数量将 Diff 分为两类：
+
+1. 当 newChild 类型为 object、number、string，代表同级只有一个节点
+
+2. 当 newChild 类型为 Array，同级有多个节点
