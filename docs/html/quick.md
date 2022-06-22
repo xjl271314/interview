@@ -18,6 +18,12 @@ group:
 <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, maxumun-scale=1, user-scale=no"></meta>
 ```
 
+- 如果把移动设备上浏览器的可视区域设为`viewport`的话，某些网站就会因为`viewport`太窄而显示错乱，所以这些浏览器就决定默认情况下把`viewport`设为一个较宽的值，比如`980px`，这样的话即使是那些为桌面设计的网站也能在移动浏览器上正常显示了。`ppk`把这个浏览器默认的`viewport`叫做`layoutviewport`。
+
+- `layoutviewport`的宽度是大于浏览器可视区域的宽度的，所以我们还需要一个`viewport`来代表浏览器可视区域的大小，`ppk`把这个`viewport`叫做`visualviewport`。
+
+- `idealviewport`是最适合移动设备的`viewport`，`idealviewport`的宽度等于`移动设备的屏幕宽度`，只要在`css`中把某一元素的宽度设为`idealviewport`的宽度（单位用 px），那么这个元素的宽度就是设备屏幕的宽度了，也就是宽度为 100%的效果。`idealviewport`的意义在于，无论在何种分辨率的屏幕下，那些针对`idealviewport`而设计的网站，不需要用户手动缩放，也不需要出现横向滚动条，都可以完美的呈现给用户。
+
 ## 2.请描述一下 cookies，sessionStorage 和 localStorage 的区别？
 
 | 特性           | Cookie                                                                                                                                                                                               | localStorage                                                                            | sessionStorage                                                                        |
@@ -158,4 +164,8 @@ btn.onclick = function (event) {
 };
 ```
 
-## 11.
+## 11.浏览器如何判断是否支持 webp 格式图片？
+
+1. 宽高判断法。通过创建 image 对象，将其 src 属性设置为 webp 格式的图片，然后在`onload`事件中获取图片的宽高，如果能够获取，则说明浏览器支持 webp 格式图片。如果不能获取或者触发了`onerror`函数，那么就说明浏览器不支持`webp`格式的图片。
+
+2. canvas 判断方法。我们可以动态的创建一个 canvas 对象，通过 canvas 的 toDataURL 将设置为 webp 格式，然后判断 返回值中是否含有 image/webp 字段，如果包含则说明支持 WebP，反之则不支持

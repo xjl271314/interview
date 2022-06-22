@@ -511,7 +511,7 @@ export function request(config) {
         ? onTimeout()
         : () => {
             rej({
-              code: 500,
+              code: 504,
               msg: `${url}请求超时`,
             });
           };
@@ -520,7 +520,7 @@ export function request(config) {
         ? onError()
         : () => {
             rej({
-              code: 500,
+              code: 504,
               msg: '请求发生异常',
             });
           };
@@ -619,7 +619,7 @@ export function jsonpRequest(config = {}) {
       // 调用失败回调
       typeof error === 'function' &&
         error({
-          code: 500,
+          code: 504,
           msg: `${url}请求超时`,
         });
     }, timeout);

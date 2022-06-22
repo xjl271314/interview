@@ -550,3 +550,64 @@ const txt =
 
 export default () => <Info title="总结" txt={txt} />;
 ```
+
+## 27. 如何优雅的处理 async 的错误?
+
+[原文地址](https://xjl271314.github.io/docs/javascript/asyncCatch.html)
+
+```js
+function asyncPromise(promise) {
+  if (!promise || !Promise.prototype.isPrototypeOf(promise)) {
+    return new Promise((res, rej) => {
+      rej(new Error('参数必须是 promise'));
+    }).catch((err) => {
+      return [err, null];
+    });
+  }
+
+  return promise
+    .then((data) => {
+      return [null, data];
+    })
+    .catch((err) => {
+      return [err, null];
+    });
+}
+
+async function task() {
+  const [err1, res1] = await asyncPromise(fetch1());
+
+  if (err1) {
+    return 'fetch1 error' + err1;
+  }
+
+  const [err2, res2] = await asyncPromise(fetch2(res1));
+
+  if (err2) {
+    return 'fetch2 error' + err2;
+  }
+
+  return res2;
+}
+```
+
+## 28. 空值合并运算符(??)如何执行？
+
+我们将值既不是 `null` 也不是 `undefined` 的表达式称为`已定义的（defined）`。
+
+执行逻辑是**如果第一个参数不是 `null`、`undefined`，则 `??` 返回第一个参数。否则，返回第二个参数。**
+
+等价于:
+
+```js
+result = a !== null && a !== undefined ? a : b;
+```
+
+另外需要注意的是:
+
+- `??` 运算符的优先级非常低，仅略高于 `?` 和 `=`，因此在表达式中使用它时请考虑添加`括号`。
+- 如果没有明确添加括号，不能将其与 `||` 或 `&&` 一起使用。
+
+## 29. Chrome 常用控制台调试技巧
+
+![掘金文章地址](https://juejin.cn/post/7085135692568723492#heading-10)
