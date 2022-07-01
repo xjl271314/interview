@@ -610,4 +610,230 @@ result = a !== null && a !== undefined ? a : b;
 
 ## 29. Chrome 常用控制台调试技巧
 
-![掘金文章地址](https://juejin.cn/post/7085135692568723492#heading-10)
+[掘金文章地址](https://juejin.cn/post/7085135692568723492#heading-10)
+
+## 30. React Hooks 中防抖、节流函数为什么不生效?
+
+我们先来看下 demo:
+
+```jsx
+import React, { useState } from 'react';
+import { Button, Space } from 'antd';
+
+// 防抖立即执行版
+function debounce(fn, delay = 1000) {
+  let timer = null;
+
+  return function () {
+    let context = this;
+    let args = arguments;
+    if (timer) {
+      clearTimeout(timer);
+    }
+    let callNow = !timer;
+    timer = setTimeout(() => {
+      timer = null;
+    }, delay);
+
+    callNow && fn.apply(context, args);
+  };
+}
+
+// 节流
+function throttle(fn, delay = 1000) {
+  let previous = 0;
+  return function () {
+    let context = this;
+    let args = arguments;
+    let now = Date.now();
+    if (now - previous > delay) {
+      fn.apply(context, args);
+      previous = now;
+    }
+  };
+}
+
+const [state, setState] = useState({
+  normalTxt: 0,
+  debounceTxt: 0,
+  throttleTxt: 0,
+});
+
+const normalClick = () => {
+  setState((prevState) => ({
+    ...prevState,
+    normalTxt: Date.now(),
+  }));
+};
+
+const debounceClick = debounce(() => {
+  setState((prevState) => ({
+    ...prevState,
+    debounceTxt: Date.now(),
+  }));
+});
+
+const throttleClick = throttle(() => {
+  setState((prevState) => ({
+    ...prevState,
+    throttleTxt: Date.now(),
+  }));
+});
+
+const App = () => {
+  return (
+    <div>
+      <p>我是普通函数的执行结果{state.normalTxt}</p>
+      <p>我是防抖函数的执行结果{state.debounceTxt}</p>
+      <p>我是节流函数的执行结果{state.throttleTxt}</p>
+      <Space>
+        <Button onClick={normalClick}>我没有加防抖节流</Button>
+        <Button onClick={debounceClick}>我加了防抖，1秒的限制</Button>
+        <Button onClick={throttleClick}>我加了节流，1秒的限制</Button>
+      </Space>
+    </div>
+  );
+};
+export default () => <App />;
+```
+
+上述的代码中点击事件虽然都加了防抖和节流函数，但是实际上并没有起作用。
+
+**这是因为函数式组件每次渲染结束后，内部的变量都会被释放，重新渲染时所有的变量都会被重新初始化，产生的结果就是每一次都注册和执行了 `setTimeout` 函数。**
+
+**要想要得到正确的结果，必须以某种方式存储那些会被删除的变量和方法的引用。这里就可以使用`useCallback` 和 `useRef`来实现。**
+
+```jsx
+import React, { useState, useCallback } from 'react';
+import { Button, Space } from 'antd';
+
+// 防抖立即执行版
+function debounce(fn, delay = 1000) {
+  let timer = null;
+
+  return function () {
+    let context = this;
+    let args = arguments;
+    if (timer) {
+      clearTimeout(timer);
+    }
+    let callNow = !timer;
+    timer = setTimeout(() => {
+      timer = null;
+    }, delay);
+
+    callNow && fn.apply(context, args);
+  };
+}
+
+// 节流
+function throttle(fn, delay = 1000) {
+  let previous = 0;
+  return function () {
+    let context = this;
+    let args = arguments;
+    let now = Date.now();
+    if (now - previous > delay) {
+      fn.apply(context, args);
+      previous = now;
+    }
+  };
+}
+
+const [state, setState] = useState({
+  normalTxt: 0,
+  debounceTxt: 0,
+  throttleTxt: 0,
+});
+
+const normalClick = () => {
+  setState((prevState) => ({
+    ...prevState,
+    normalTxt: Date.now(),
+  }));
+};
+
+const debounceClick = useCallback(
+  debounce(() => {
+    setState((prevState) => ({
+      ...prevState,
+      debounceTxt: Date.now(),
+    }));
+  }),
+  [],
+);
+
+const throttleClick = useCallback(
+  throttle(() => {
+    setState((prevState) => ({
+      ...prevState,
+      throttleTxt: Date.now(),
+    }));
+  }),
+  [],
+);
+
+const App = () => {
+  return (
+    <div>
+      <p>我是普通函数的执行结果{state.normalTxt}</p>
+      <p>我是防抖函数的执行结果{state.debounceTxt}</p>
+      <p>我是节流函数的执行结果{state.throttleTxt}</p>
+      <Space>
+        <Button onClick={normalClick}>我没有加防抖节流</Button>
+        <Button onClick={debounceClick}>我加了防抖，1秒的限制，执行正常</Button>
+        <Button onClick={throttleClick}>我加了节流，1秒的限制，执行正常</Button>
+      </Space>
+    </div>
+  );
+};
+export default () => <App />;
+```
+
+Hooks 版实现
+
+```js
+// 防抖
+export function useDebounce(fn, delay, dep = []) {
+  const { current } = useRef({ fn, timer: null });
+  useEffect(() => {
+    current.fn = fn;
+  }, [fn]);
+
+  return useCallback(function f(...args) {
+    if (current.timer) {
+      clearTimeout(current.timer);
+    }
+    current.timer = setTimeout(() => {
+      current.fn.call(this, ...args);
+    }, delay);
+  }, dep);
+}
+
+// 节流
+export function useThrottle(fn, delay, dep = []) {
+  const { current } = useRef({ fn, timer: null });
+  useEffect(
+    function () {
+      current.fn = fn;
+    },
+    [fn],
+  );
+  return useCallback(function f(...args) {
+    if (!current.timer) {
+      current.timer = setTimeout(() => {
+        delete current.timer;
+      }, delay);
+      current.fn.call(this, ...args);
+    }
+  }, dep);
+}
+```
+
+## 31. webpack 的动态 import 实现的原理是什么?
+
+首先`import()`其实是个语法糖，他的本质是`promise`，执行后返回一个`Promise对象`，我们可以在`.then()`里面拿到真正引用的模块。
+
+其次经过 webpack 打包的文件会在`window`下生成一个`webpackJsonp`数组，入口文件会执行`__webpack_require__(index.js)`来引用相对应的文件，入口文件内部会执行`__webpack_require__.e(0)`来拉取异步代码，而我们动态 import 的代码实际上是通过动态创建`script`脚本(类似于 JSONP)的方式被添加到`webpackJsonp`这个数组中在真正使用的地方去`resolve`出来的。
+
+**简单的来说就是通过`动态创建script脚本`并在需要使用的地方执行`Promise`中`.then()`来实现的。**
