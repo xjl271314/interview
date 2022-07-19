@@ -196,6 +196,27 @@ escape 不会编码的字符有 69 个：`* + - . / @ _ 0-9 a-z A-Z`。
 
 如果不显示声明的话，在运行时该模块内就会报未定义变量 `React`的错误。
 
+而在 `React17`之后，新的 jsx 编译会从`react/jsx-runtime`包中引入，不需要在每个页面再手动去`import`。
+
+```js
+// React 17 之前
+import React from 'react';
+
+function App() {
+  return <div>app</div>;
+}
+
+// 编译后
+React.createElement('div', {});
+
+// React 17 之后
+import { jsx as _jsx } from 'react/jsx-runtime';
+
+function App() {
+  return _jsx('div', { children: 'app' });
+}
+```
+
 ## 15.跨域请求如何携带 cookie?
 
 1. 前端请求时在`request对象`中配置`withCredentials: true`；
@@ -453,7 +474,7 @@ alert(book.edition); //2
 
 ## 25. for 循环方法详解
 
-### for ... in ...
+### for ... in
 
 在使用 `for-in` 循环时，返回的是所有能够通过对象访问的、可枚举的（enumerated）属性，其中既包括存在于`实例中的属性`，也包括存在于`原型中的属性`。原型中不可枚举属性（即将 Enumerable 标记为 false 的属性）的实例属性也会在`for-in`循环中返回。
 
@@ -532,7 +553,7 @@ if (intervalMilliseconds < minimumInterval && m_nestingLevel >= maxTimerNestingL
 
 在第二段代码中我们会看到，首先会在 延迟时间 和 `1ms` 之间取一个最大值。换句话说，在不满足嵌套层级的情况下，最小延迟时间设置为 `1ms`。
 
-在 `chromium` 的注释中，解释了为什么要设置 `minimumInterval = 4ms`。简单来讲，本身 `chromium `团队想要设置更低的延迟时间（其实他们期望达到亚毫秒级别），但是由于某些网站（比如纽约时报的网站）对 `setTimeout` 这种计时器不良的使用，设置延迟过低会导致 `CPU-spinning`，因此 `chromium` 做了些 `benchmark` 测试，选定了 `4ms` 作为其 `minimumInterval`。
+在 `chromium` 的注释中，解释了为什么要设置 `minimumInterval = 4ms`。简单来讲，本身 `chromium`团队想要设置更低的延迟时间（其实他们期望达到亚毫秒级别），但是由于某些网站（比如纽约时报的网站）对 `setTimeout` 这种计时器不良的使用，设置延迟过低会导致 `CPU-spinning`，因此 `chromium` 做了些 `benchmark` 测试，选定了 `4ms` 作为其 `minimumInterval`。
 
 到这里为止，从浏览器厂商角度和 `HTML standard` 规范角度都解释了 `4ms` 的来源和其更加精确的定义，但是究竟是 `HTML standard` 先做出的设定，还是 `Chromium` 这种浏览器厂商先做出的设定。了解先后顺序的意义在于了解其背后历史，规范和厂商是如何相互促进与制衡的。
 
@@ -837,3 +858,347 @@ export function useThrottle(fn, delay, dep = []) {
 其次经过 webpack 打包的文件会在`window`下生成一个`webpackJsonp`数组，入口文件会执行`__webpack_require__(index.js)`来引用相对应的文件，入口文件内部会执行`__webpack_require__.e(0)`来拉取异步代码，而我们动态 import 的代码实际上是通过动态创建`script`脚本(类似于 JSONP)的方式被添加到`webpackJsonp`这个数组中在真正使用的地方去`resolve`出来的。
 
 **简单的来说就是通过`动态创建script脚本`并在需要使用的地方执行`Promise`中`.then()`来实现的。**
+
+## 32. typeScript 中的数字枚举的实现原理?
+
+简单的来说是通过闭包中反向映射来实现的。
+
+```ts
+enum Direction {
+  Up = 10,
+  Down,
+  Left,
+  Right,
+}
+
+// js
+(function (Direction) {
+  Direction[(Direction['Up'] = 10)] = 'Up';
+  Direction[(Direction['Down'] = 11)] = 'Down';
+  Direction[(Direction['Left'] = 12)] = 'Left';
+  Direction[(Direction['Right'] = 13)] = 'Right';
+})(Direction || (Direction = {}));
+```
+
+1. 首先将 `key` 和 `value` 值进行对应 => `Direction["Up"] = 10`;
+2. 接着将上一步的值作为`key`，将枚举中设定的 `key` 作为 `value => Direction[Direction["Up"] = 10] = "Up"`;
+
+## 33. ts 中假如后端返回的数据字段比我们定义的接口要多，如何处理报错问题?
+
+假设刚开始后端返回的数据格式：
+
+```js
+let res = {
+  subject: 'math',
+  detail: [
+    {
+      id: 1,
+      data: '数学',
+    },
+  ],
+};
+```
+
+我们定义对应的接口如下:
+
+```ts
+interface List {
+  id: number;
+  data: string;
+}
+
+interface LearnList {
+  subject: string;
+  detail: List[];
+}
+
+let res: LearnList = {
+  subject: 'math',
+  detail: [
+    {
+      id: 1,
+      data: '数学',
+    },
+  ],
+};
+```
+
+此时经过某次迭代之后，后端返回的数据中多了 `teacher` 这个字段.
+
+```ts
+/**
+ * Type '{ teacher: string; subject: string; detail: { id: number; data: string; }[]; }' is  * not assignable to type 'LearnList'.
+ * Object literal may only specify known properties, and 'teacher' does not exist in type * * 'LearnList'.(2322)
+ **/
+let res: LearnList = {
+  teacher: 'Li', // 新增了这个字段
+  subject: 'math',
+  detail: [
+    {
+      id: 1,
+      data: '数学',
+    },
+  ],
+};
+```
+
+这种情况下我们原先的代码就会报错。
+
+实际的解决方案有如下两种:
+
+1. 采用赋值对象
+
+```ts
+function transformData(data: LearnList) {
+  return data;
+}
+
+const cache = {
+  subject: 'math',
+  teacher: 'Li',
+  detail: [
+    {
+      id: 1,
+      data: '数学',
+    },
+  ],
+};
+
+let res = transformData(cache);
+```
+
+2. 采用类型断言
+
+```ts
+let res = transformData({
+  subject: 'math',
+  teacher: 'Li',
+  detail: [
+    {
+      id: 1,
+      data: '数学',
+    },
+  ],
+} as LearnList);
+```
+
+## 34. ts 中的可索引类型接口是啥?
+
+就像上面的接口定义，在实际应用中可能后端会返回一些额外的数据，除了使用类型断言外，我们还可以使用`可索引类型接口`来扩展接口的定义。
+
+比如我将`LearnList`接口中的所有的其余字符串类型的值索引为 any 类型。
+
+```ts
+interface List {
+  id: number;
+  data: string;
+}
+
+interface LearnList {
+  subject: string;
+  detail: List[];
+  [x: string]: any;
+}
+
+// OK
+let res: LearnList = {
+  teacher: 'Li',
+  subject: 'math',
+  detail: [
+    {
+      id: 1,
+      data: '数学',
+    },
+  ],
+};
+```
+
+```jsx
+/**
+ * inline: true
+ */
+import React from 'react';
+import { Info } from 'interview';
+
+const txt =
+  '\n需要注意的是不管是`数字索引`还是`字符串索引`，下面的索引值类型，必须是上面索引的子类型. 因为我们已经规定了任意的索引得到的值都是 `string`，此时任何一个成员的值变成 `number` 都会报错.';
+
+export default () => <Info type="warning" txt={txt} />;
+```
+
+```ts
+interface StringArray {
+  [x: string]: string;
+  [z: number]: string;
+  y: 22; // Error : Property 'y' of type '22' is not assignable to string index type 'string'
+}
+
+interface StringArray {
+  [x: string]: string;
+  [z: number]: number; // Error 因为 string 不兼容 number
+}
+
+interface StringArray {
+  [x: string]: any;
+  [z: number]: number; // OK any 兼容 number
+}
+```
+
+## 35. ts 中的映射类型主要有哪几种?
+
+- Readonly
+
+  将所有的属性变成只读。
+
+  ```ts
+  interface Obj1 {
+    a: string;
+    b: number;
+    c: boolean;
+  }
+
+  type ReadonlyObj = Readonly<Obj1>;
+
+  /**
+   *  type ReadonlyObj = {
+   *    readonly a: string;
+   *    readonly b: number;
+   *    readonly c: boolean;
+   *  }
+   **/
+
+  // 内部实现原理
+  type Readonly<T> = {
+    readonly [P in keyof T]: T[P];
+  };
+  ```
+
+- Partial
+
+  将内部属性都变成可选。
+
+  ```ts
+  interface Obj {
+    a: string;
+    b: number;
+    c: boolean;
+  }
+
+  type PartialObj = Partial<Obj>;
+
+  /**
+   *  type PartialObj = {
+   *    a?: string;
+   *    b?: number;
+   *    c?: boolean;
+   *  }
+   **/
+
+  // 内部实现原理
+  type Partial<T> = {
+    [P in keyof T]?: T[P];
+  };
+  ```
+
+- Pick
+
+  将内部某些属性挑选出来。
+
+  ```ts
+  interface Obj {
+    a: string;
+    b: number;
+    c: boolean;
+  }
+
+  type PickObj = Pick<Obj, 'a' | 'b'>;
+
+  /**
+   *  type PickObj = {
+   *    a: string;
+   *    b: number;
+   *  }
+   **/
+
+  type PickObj<T, K extends keyof T> = {
+    [P in K]: T[P];
+  };
+  ```
+
+- Record
+
+  创建一个新的属性类型，新的属性是已知属性类型。
+
+  ```ts
+  interface Obj {
+    a: string;
+    b: number;
+    c: boolean;
+  }
+
+  type RecordObj = Record<'x' | 'y', Obj>;
+
+  /**
+   *  type RecordObj = {
+   *    x: Obj;
+   *    y: Obj;
+   *  }
+   **/
+
+  type RecordObj<K extends keyof any, T> = {
+    [P in K]: T;
+  };
+  ```
+
+## 36. Reflect.ownKeys(obj) 和 Object.keys(obj)有什么异同?
+
+1. 不同点:
+
+- `Reflect.ownKeys()`可以获取到对象上的`可枚举属性`与`不可枚举属性`(Symbol)
+- `Object.keys()`只能获取到对象上的`可枚举属性`。
+- 当对象是数组的时候，`Reflect.ownKeys()`会多返回一个`length`属性。
+
+2. 相同点
+
+- 接收的参数都必须是对象，否则会报错。
+- 返回的数据类型都是数组。
+- 都不能返回原型链上的属性。
+
+```js
+// 基础对象
+const obj = {
+  a: 1,
+  b: 2,
+};
+
+Reflect.ownKeys(obj); // ['a', 'b']
+Object.keys(obj); // ['a', 'b']
+
+// 带不可枚举属性的对象
+Object.defineProperty(obj, 'c', {
+  wirtable: true,
+  enumerable: false, // 不可枚举
+  configurable: true, // 表示能否通过delete删除属性从而重新定义属性，能否修改属性的特性
+  value: 3,
+});
+
+Reflect.ownKeys(obj); // ['a', 'b', 'c']
+Object.keys(obj); // ['a', 'b']
+
+// 带symbol值
+const obj2 = {
+  a: 1,
+  b: 2,
+  [Symbol('d')]: 3,
+};
+Reflect.ownKeys(obj2); //  ['a', 'b', Symbol(d)]
+Object.keys(obj2); // ['a', 'b']
+```
+
+| 方法分类            | 普通属性 | 不可枚举属性 | Symbol 属性 | 原型属性 | 数组 length |
+| :------------------ | :------- | :----------- | :---------- | :------- | :---------- |
+| `Reflect.ownKeys()` | ✅       | ✅           | ✅          | ❌       | ✅          |
+| `Object.keys()`     | ✅       | ❌           | ❌          | ❌       | ❌          |
+| `for...in`          | ✅       | ❌           | ❌          | ✅       | ❌          |
+
+**注意: 实际运用中假如我们是用来判断后端的返回数据是否为空对象或者说普通对象是否为空对象，实际上使用`Object.keys(obj).length == 0` 即可，否则使用 `Reflect.ownKeys(obj).length == 0 && obj.constructor == Object`来判断。**

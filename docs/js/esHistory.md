@@ -198,7 +198,7 @@ var person = new Person('Lucy', 18);
 
 #### 引申：ES6 底层 class 实现逻辑
 
-##### 检查声明的 class 类是否通过 new 的方式调用，否则会报错。
+##### 检查声明的 class 类是否通过 new 的方式调用，否则会报错
 
 - \_instanceof:
 
@@ -226,7 +226,7 @@ var person = new Person('Lucy', 18);
   }
   ```
 
-##### 收集公有函数和静态方法，将方法添加到构造函数或构造函数的原型中，并返回构造函数。
+##### 收集公有函数和静态方法，将方法添加到构造函数或构造函数的原型中，并返回构造函数
 
 - \_createClass:
 
@@ -243,7 +243,7 @@ var person = new Person('Lucy', 18);
   }
   ```
 
-##### 将方法添加到构造函数或构造函数的原型中的主要逻辑，遍历函数数组，分别声明其描述符。
+##### 将方法添加到构造函数或构造函数的原型中的主要逻辑，遍历函数数组，分别声明其描述符
 
 若`enumerable` 没有被定义为`true`，则默认为`false`，设置 `configurable` 为`true`。
 
@@ -1360,4 +1360,116 @@ const binary_literals = 0b1010_0001_1000_0101;
 const hex_literals = 0xa0_b0_c0;
 const bigInt_literals = 1_000_000_000_000n;
 const octal_literal = 0o1234_5670;
+```
+
+## ES13(ES2022)
+
+### 类的丰富
+
+- 公共属性可以通过实例公共字段创建
+
+  ```js
+  // 之前
+  class App = {
+      constructor(){
+          this.name = 'app';
+          this.version = '1.0.0';
+      }
+  }
+
+  // 现在
+  class App = {
+      // 实例公共字段
+      name = 'app';
+      version = '1.0.0';
+  }
+  ```
+
+- 私有属性
+
+  私有字段在类主体之外是不可访问的。
+
+  之所以要引入#而不是使用 private 关键字，是因为 JavaScript 是一门动态语言，没有类型声明，使用独立的符号似乎是唯一的比较方便的可靠的方法，能够比较准确的区分一个属性是否为私有属性。另外 Ruby 语言是用 @ 表示私有属性，JS 中没有使用这个符号而是使用了 #， 因为 @ 已经留给了装饰器(Decorator)。
+
+  ```js
+  class App = {
+      #author = 'aa';
+
+      #getName(){
+          return #author;
+      }
+  }
+  ```
+
+- 静态属性
+
+  可以使用 static 声明静态属性。
+
+  ```js
+  class App = {
+      static version = '1.0.0';
+  }
+  ```
+
+### 顶级 await
+
+之前使用 `async/await` 进行配合，不能在 `async` 外使用 `await` 在某些场景下我们往往会这么去使用。
+
+```js
+(async()=>{
+    await(...);
+})();
+```
+
+现在可以在任何地方使用 `await` 而不受 `async` 的限制。
+
+```js
+await fn(...);
+```
+
+### Array.at()
+
+使用 `Array.at(index)` 可以快速的帮我们找到指定位置所对应的值，支持负数(从后往前)查找。
+
+```js
+const arr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+
+console.log(arr.at(-2)); // 9 => 等价于 arr[arr.length - 2]
+console.log(arr.at(8)); // 9
+```
+
+### Object.hasOwn()
+
+这是检查 obj 对象自身属性 propKey 的一种安全方法。它类似于`Object.prototype.hasOwnProperty`但它支持所有对象类型。
+
+```js
+const proto = {
+  protoProp: 'protoProp',
+};
+
+const obj = {
+  __proto__: proto,
+  objProp: 'objProp',
+};
+
+console.log('protoProp' in obj); // output - true.
+console.log(Object.hasOwn(obj, 'protoProp')); // output - false
+console.log(Object.hasOwn(proto, 'protoProp')); // output - true.
+```
+
+### error.cause
+
+通过分析错误及其子类可以让我们指定错误背后的原因。
+
+```js
+
+function request(res) {
+    try {
+        // ···
+    } catch (error) {
+        throw new Error(
+          `request error`,
+          {cause: error}
+        );
+    }
 ```

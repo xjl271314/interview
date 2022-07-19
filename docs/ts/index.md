@@ -317,13 +317,13 @@ x = [1, 'hello'];
 
 ## 枚举
 
-`enum`类型是一组有名字的常量集合，是对 `JavaScript` 标准数据类型的一个补充。 使用枚举我们可以定义一些带名字的常量, 可以清晰地表达意图或创建一组有区别的用例。 `TypeScript`支持`数字`的和基于`字符串`的枚举。
+`enum`类型是一组有名字的常量集合，是对 `JavaScript` 标准数据类型的一个补充。 使用枚举我们可以定义一些带名字的常量，可以清晰地表达意图或创建一组有区别的用例。 `TypeScript`支持`数字`的和基于`字符串`的枚举。
 
 其中枚举成员的值是`只读(readonly)`的定义了之后不能进行修改。
 
 ### 数字枚举
 
-- 若无默认值, 默认从 0 开始, 依次递增。既可以使用数字索引也可以使用对象索引 内部通过'反向映射'的原理实现:
+- 若无默认值，默认从 0 开始，依次递增。既可以使用数字索引也可以使用对象索引内部通过`反向映射`的原理实现:
 
   ```ts
   enum Role {
@@ -403,7 +403,7 @@ x = [1, 'hello'];
 
 ### 字符串枚举
 
-字符串枚举的概念很简单，但是有细微的 运行时的差别。 在一个字符串枚举里，每个成员都必须用字符串字面量，或另外一个字符串枚举成员进行初始化。
+字符串枚举的概念很简单，但是有细微的运行时的差别。 在一个字符串枚举里，每个成员都必须用字符串字面量，或另外一个字符串枚举成员进行初始化。
 
 ```ts
 enum Status {
@@ -567,16 +567,16 @@ interface User {
   eat(): void; // 也可以声明一个函数
 }
 
-// example
+// Error: Property 'eat' is missing in type '{ id: number; gender: string; }' but required in type 'User'.(2741)
 let p1: User = {
   id: 1,
   gender: 'man',
 };
 
-//Error: Cannot assign to 'id' because it is a constant or a read-only property.
+// Error: Cannot assign to 'id' because it is a constant or a read-only property.
 p1.id = 2;
 
-//Error: Property 'gender' is missing in type
+// Error: Type '{ id: number; }' is missing the following properties from type 'User': gender, eat(2739)
 let p2: User = {
   id: 2,
 };
@@ -892,6 +892,7 @@ let myAdd = function (x, y) {
 
      ```ts
      // 经测试该方式行不通 测试版本3.7.4
+     // 补充：在版本4.7.4下测试通过
      let add2: (x: number, y: number) => number;
      ```
 
@@ -2181,7 +2182,7 @@ function getValues(obj: any, keys: string[]) {
 // [1, 2]
 console.log(getValues(obj, ['a', 'b']));
 
-// [undefined, undefined]
+// [3, undefined]
 console.log(getValues(obj, ['c', 'd']));
 ```
 
@@ -2189,13 +2190,15 @@ console.log(getValues(obj, ['c', 'd']));
 
 - `keyof T`
 
+获取对象中的所有键类型组成的联合类型。
+
 ```ts
 interface Obj {
   a: number;
   b: string;
 }
 
-//
+// 相当于 let key: 'a' | 'b'
 let key: keyof Obj;
 ```
 
@@ -2224,7 +2227,7 @@ console.log(getValues(obj, ['c', 'd']));
 
 将原有的类型映射成新的一种类型。
 
-- readonly
+- Readonly
 
   ```ts
   interface Obj1 {
@@ -2241,9 +2244,9 @@ console.log(getValues(obj, ['c', 'd']));
   };
   ```
 
-  ![ReadonlyObj](https://img-blog.csdnimg.cn/65b4457323e24bd1957f658159c583ad.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBAeGpsMjcxMzE0,size_11,color_FFFFFF,t_70,g_se,x_16)
+  ![ReadonlyObj](https://img-blog.csdnimg.cn/65b4457323e24bd1957f658159c583ad.png?x-oss-process=image,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBAeGpsMjcxMzE0,size_11,color_FFFFFF,t_70,g_se,x_16)
 
-- partial
+- Partial
 
   ```ts
   // 将内部属性都变成可选
@@ -2417,7 +2420,7 @@ console.log(cricle(2));
     x: number;
   }
 
-  interface B {
+  interface A {
     y: number;
   }
 
@@ -2433,10 +2436,10 @@ console.log(cricle(2));
   ```ts
   interface A {
       x: number;
-  + y: string
+    + y: string
   }
 
-  interface B {
+  interface A {
       y: number
   }
 
@@ -2447,55 +2450,55 @@ console.log(cricle(2));
   }
   ```
 
-  ![同名接口不同属性类型](https://img-blog.csdnimg.cn/20982dae79cb48ae894f3ac2ef5ec827.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBAeGpsMjcxMzE0,size_20,color_FFFFFF,t_70,g_se,x_16)
+  ![同名接口不同属性类型](https://img-blog.csdnimg.cn/20982dae79cb48ae894f3ac2ef5ec827.png?x-oss-process=image,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBAeGpsMjcxMzE0,size_20,color_FFFFFF,t_70,g_se,x_16)
 
   **对于函数成员，每个函数都会生成一个新的函数重载，函数列表中的顺序会以后声明的排在前面**:
 
   ```ts
   interface A {
-      x: number;
-      foo: (bar : number): number // 在函数声明列表中排3位
-      foo: (bar: 'a'): number
+    x: number;
+    foo(bar: number): number; // 在函数声明列表中排3位
+    foo(bar: 'a'): number;
   }
 
-  interface B {
-      y: number;
-      foo: (bar : string): string; // 在函数声明列表中排1位
-      foo: (bar : number[]): number[]; // 在函数声明列表中排2位
+  interface A {
+    y: number;
+    foo(bar: string): string; // 在函数声明列表中排1位
+    foo(bar: number[]): number[]; // 在函数声明列表中排2位
   }
 
   let a: A = {
-      x: 1,
-      y: 1,
-      foo(bar: any){
-          return bar
-      }
-  }
+    x: 1,
+    y: 1,
+    foo(bar: any) {
+      return bar;
+    },
+  };
   ```
 
   **如果函数声明是字面量的话会被提升到顶端**:
 
   ```ts
   interface A {
-      x: number;
-      foo: (bar : number): number; // 在函数声明列表中排5位
-      foo: (bar: 'a'): number // 在函数声明列表中排2位
+    x: number;
+    foo(bar: number): number; // 在函数声明列表中排5位
+    foo(bar: 'a'): number; // 在函数声明列表中排2位
   }
 
   interface B {
-      y: number;
-      foo: (bar : string): string; // 在函数声明列表中排3位
-      foo: (bar : number[]): number[]; // 在函数声明列表中排4位
-      foo: (bar: 'b'): number; // 在函数声明列表中排1位
+    y: number;
+    foo(bar: string): string; // 在函数声明列表中排3位
+    foo(bar: number[]): number[]; // 在函数声明列表中排4位
+    foo(bar: 'b'): number; // 在函数声明列表中排1位
   }
 
   let a: A = {
-      x: 1,
-      y: 1,
-      foo(bar: any){
-          return bar
-      }
-  }
+    x: 1,
+    y: 1,
+    foo(bar: any) {
+      return bar;
+    },
+  };
   ```
 
 - 命名空间的合并

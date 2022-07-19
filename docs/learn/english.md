@@ -195,3 +195,44 @@ group:
 1. long crooked squash 菜瓜 ; 酱瓜 ; 地瓜
 2. summer squash [园艺] 西葫芦 ; 绿西葫芦 ; 夏南瓜 ; 夏天南瓜
 3. Orange Squash 橘子汁 ; 橙汁汽水 ; 桔子水
+
+### assignable
+
+> 英 [əˈsaɪnəbl] 美 [əˈsaɪnəbl] [在线翻译](https://dict.youdao.com/w/assignable/#keyfrom=dict2.top)
+
+- adj. [经] 可分配的；可指定的；可让渡的
+
+### execution
+
+> 英 [ˌeksɪˈkjuːʃ(ə)n] 美 [ˌeksɪˈkjuːʃn] [在线翻译](http://dict.youdao.com/w/eng/execution/#keyfrom=dict2.top.suggest)
+
+- n. 执行，实施，完成；处决，死刑；表演，制作；政治谋杀；没收债务人财产，扣押债务人；（法律文书或命令的）执行
+
+1. execution context 执行上下文
+
+### variable
+
+> 英 [ˈveəriəb(ə)l] 美 [ˈveriəblˌˈværiəbl] [在线翻译](http://dict.youdao.com/w/variable/#keyfrom=dict2.top)
+
+- adj. 易变的，多变的；时好时坏的；可变的，可调节的；（数）（数字）变量的；（植，动）变异的，变型的；（齿轮）变速的
+- n. 可变性，可变因素；（数学中的）变量，变元；（计算机）变量（元）；（天文）变星的简称；（东北信风带以北或南半球的东南信风带与西风带之间的）变风区
+
+1. environment variable 环境变量
+2. global variable 全局变量
+3. local variable 局部变量
+4. variable object 变量对象
+
+### scope
+
+> 英 [skəʊp] 美 [skoʊp] [在线翻译] (http://dict.youdao.com/w/Scope/#keyfrom=dict2.top)
+
+- n. 范围，领域；
+- v. 评估，调查（scope sth. out）
+
+1. scope chain 作用域链
+
+### executor
+
+> 英 [ɪɡˈzekjətə(r)] 美 [ɪɡˈzekjətər] [在线翻译] (http://dict.youdao.com/w/executor/#keyfrom=dict2.top)
+
+- n. 执行者；[法] 遗嘱执行人
