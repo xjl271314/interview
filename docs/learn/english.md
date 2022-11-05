@@ -224,7 +224,7 @@ group:
 
 ### scope
 
-> 英 [skəʊp] 美 [skoʊp] [在线翻译] (http://dict.youdao.com/w/Scope/#keyfrom=dict2.top)
+> 英 [skəʊp] 美 [skoʊp] [在线翻译] (<http://dict.youdao.com/w/Scope/#keyfrom=dict2.top>)
 
 - n. 范围，领域；
 - v. 评估，调查（scope sth. out）
@@ -233,6 +233,97 @@ group:
 
 ### executor
 
-> 英 [ɪɡˈzekjətə(r)] 美 [ɪɡˈzekjətər] [在线翻译] (http://dict.youdao.com/w/executor/#keyfrom=dict2.top)
+> 英 [ɪɡˈzekjətə(r)] 美 [ɪɡˈzekjətər] [在线翻译] (<http://dict.youdao.com/w/executor/#keyfrom=dict2.top>)
 
 - n. 执行者；[法] 遗嘱执行人
+
+### tutorial
+
+> 英 [tjuːˈtɔːriəl] 美 [tuːˈtɔːriəl] [在线翻译] (<https://dict.youdao.com/w/tutorial/#keyfrom=dict2.top>)
+
+- adj. 导师的，辅导的
+- n. 导师辅导课；学习指南，教程
+
+1. Game Tutorial 游戏教程
+2. tutorial system 导师制
+3. HandPainted Tutorial 手绘教程合集
+
+### elimination
+
+> 英 [ɪˌlɪmɪˈneɪʃn] 美 [ɪˌlɪmɪˈneɪʃn] [在线翻译] (<https://dict.youdao.com/w/elimination/#keyfrom=dict2.top>)
+
+- n. 消除，排除；淘汰；消灭，铲除；排泄 [ 复数 eliminations ]
+
+1. elimination reaction [化学] 消除反应
+2. dead code elimination DCE
+
+### syntax
+
+> 英 [ˈsɪntæks] 美 [ˈsɪntæks] [在线翻译] (<http://dict.youdao.com/w/eng/syntax/#keyfrom=dict2.top.suggest>)
+
+- n. 句法，句法规则；（计算机语言的）句法，语构；句子结构分析法；句法学
+
+1. syntax error 语法错误;
+2. syntax tree 语法树
+3. Abstract Syntax Tree 抽象语法树
+
+### obfuscation
+
+> 英 [ˌɒbfʌsˈkeɪʃn] 美 [ˌɑːbfʌsˈkeɪʃn] [在线翻译] (<http://dict.youdao.com/w/obfuscation/#keyfrom=dict2.top>)
+
+- n. 困惑；模糊；昏迷
+
+1. Code Obfuscation 模糊代码 ; 代码混淆 ; 代码混乱
+
+### screwed up
+
+> 英 [ˌskruːd ˈʌp] 美 [ˌskruːd ˈʌp] [在线翻译] (<https://fanyi.baidu.com/?aldtype=85&keyfrom=alading#en/zh/screwed%20up>)
+
+- 搞砸了
+
+### lexical analysis
+
+> 美 [ˈleksɪkl əˈnæləsɪs] [在线翻译] (<http://dict.youdao.com/w/Lexical%20Analysis/#keyfrom=dict2.top>)
+
+- 词法分析
+
+### Syntactic Analysis
+
+> 美 [sɪnˈtæktɪk əˈnæləsɪs] [在线翻译] (<http://dict.youdao.com/w/Syntactic%20Analysis/#keyfrom=dict2.top>)
+
+- 语法分析
+
+### Compiler
+
+> 英 [kəmˈpaɪlə(r)] 美 [kəmˈpaɪlər] [在线翻译] (<http://dict.youdao.com/w/compiler/#keyfrom=dict2.top>)
+
+- n. 编译器；[计] 编译程序；编辑者，汇编者
+
+### acorn
+
+> 英 [ˈeɪkɔːn] 美 [ˈeɪkɔːrn] [在线翻译] (<http://dict.youdao.com/w/acorn/#keyfrom=dict2.topp>)
+
+- n. 橡子，橡实
+- n. 特指 webpack 的一个插件
+
+### synthetic
+
+> 英 [sɪnˈθetɪk] 美 [sɪnˈθetɪk] [在线翻译] (<http://dict.youdao.com/w/synthetic/#keyfrom=dict2.top>)
+
+- adj. 合成的，人造的；（感情，行动）不诚恳的，虚假的；（语言）综合型的；（命题）综合的
+- n. 合成物，合成纤维（织物）
+
+1. SyntheticEvent 合成事件
+2. synthetic fiber 人造纤维 ; [纺] 合成纤维 ; 化纤 ; 分解纤维
+
+### reconciler
+
+> 英 [ˈrekənsaɪlə(r)] 美 [ˈrekənsaɪlər] [在线翻译] (<http://dict.youdao.com/w/reconciler/#keyfrom=dict2.top>)
+
+### alternate
+
+> 英 [ɔːlˈtɜːnət] 美 [ˈɔːltərnət] [在线翻译] (<http://dict.youdao.com/w/alternate/#keyfrom=dict2.top>)
+
+- v. （使）交替，（使）轮流
+- adj. 轮流的，交替的；间隔的；供选择的，备用的；（叶，芽）互生的；另类的
+- n. 替补者，候补者

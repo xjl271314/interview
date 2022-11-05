@@ -106,7 +106,7 @@ import React from 'react';
 import { Info } from 'interview';
 
 const txt =
-  '这里需要补充说明下，`HTML 解析器`开始工作时，会默认创建了一个根为 `documen`t 的空 `DOM` 结构，同时会将一个 `StartTag document` 的 `Token` 压入栈底。然后经过`分词器`解析出来的第一个 `StartTag html Token` 会被压入到栈中，并创建一个 `html` 的 `DOM` 节点，添加到 `document` 上，如下图所示:';
+  '这里需要补充说明下，`HTML 解析器`开始工作时，会默认创建了一个根为 `document` 的空 `DOM` 结构，同时会将一个 `StartTag document` 的 `Token` 压入栈底。然后经过`分词器`解析出来的第一个 `StartTag html Token` 会被压入到栈中，并创建一个 `html` 的 `DOM` 节点，添加到 `document` 上，如下图所示:';
 
 export default () => <Info type="info" txt={txt} />;
 ```

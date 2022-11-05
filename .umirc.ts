@@ -50,13 +50,12 @@ export default defineConfig({
       },
     ],
   ],
+  //   chainWebpack: function (config, { webpack }) {
+  //     config.module.test(/\.worker\.js$/).use('worker-loader');
+  //   },
   alias: {
     app: resolve(__dirname, 'src/'),
   },
   links: [],
-  scripts: [
-    // {
-    //   content: require(path.join(__dirname, '/plugin.js')),
-    // },
-  ],
+  scripts: [],
 });

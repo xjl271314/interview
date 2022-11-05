@@ -629,6 +629,48 @@ export default function App() {
 }
 ```
 
+```js
+// useStatePromise
+import { useState, useEffect } from 'react';
+
+const useStatePromise = (initState: any = '') => {
+  const [state, setState] = useState({
+    value: initState,
+    resolve: (value: any) => {},
+  });
+
+  const setStatePromise = (updater: any) => {
+    return new Promise((resolve) => {
+      setState((prevState: any) => {
+        let nextVal = updater;
+        if (updater instanceof Function) {
+          nextVal = updater(prevState.value);
+        }
+
+        return {
+          value:
+            JSON.stringify(updater) == '{}' ? {} : { ...initState, ...nextVal },
+          resolve,
+        };
+      });
+    });
+  };
+
+  useEffect(() => {
+    state.resolve(state.value);
+  }, [state]);
+
+  return [
+    state.value,
+    (updater: (value: any) => any) => {
+      return setStatePromise(updater);
+    },
+  ];
+};
+
+export default useStatePromise;
+```
+
 ## useEffect
 
 > 使用 `useEffect`函数可以让我们在函数中执行副作用操作(获取数据、设置订阅，手动更改 DOM)，该钩子可以替代 `class` 中的 `componentDidMount` 生命周期和 `componentDidUpdate`、`componentwillreceiveprops` 生命周期以及`componentWillUnMount`生命周期。
@@ -2303,13 +2345,13 @@ function mountWorkInProgressHook(): Hook {
 
 hook 对象说明
 
-| 参数          | 描述                                                                                                                                   |
-| :------------ | :------------------------------------------------------------------------------------------------------------------------------------- |
-| memoizedState | `useState` 中 保存 state 信息、`useEffect` 中 保存着 effect 对象、`useMemo` 中 保存的是缓存的值和 deps、`useRef` 中保存的是 ref 对象。 |
-| baseQueue     | `usestate` 和 `useReducer` 中 保存最新的更新队列。                                                                                     |
-| baseState     | `usestate` 和 `useReducer` 中,一次更新中 ，产生的最新 state 值。                                                                       |
-| queue         | 保存待更新队列 `pendingQueue` ，更新函数 `dispatch` 等信息。                                                                           |
-| next          | 指向下一个 `hooks` 对象。                                                                                                              |
+| 参数          | 描述                                                                                                                                |
+| :------------ | :---------------------------------------------------------------------------------------------------------------------------------- |
+| memoizedState | `useState` 中保存 state 信息、`useEffect` 中保存着 effect 对象、`useMemo` 中保存的是缓存的值和 deps、`useRef` 中保存的是 ref 对象。 |
+| baseQueue     | `usestate` 和 `useReducer` 中 保存最新的更新队列。                                                                                  |
+| baseState     | `usestate` 和 `useReducer` 中,一次更新中 ，产生的最新 state 值。                                                                    |
+| queue         | 保存待更新队列 `pendingQueue` ，更新函数 `dispatch` 等信息。                                                                        |
+| next          | 指向下一个 `hooks` 对象。                                                                                                           |
 
 那么当我们函数组件执行之后，四个 `hooks` 和 `workInProgress` 将是如图的关系。
 

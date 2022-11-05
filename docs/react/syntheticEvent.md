@@ -15,7 +15,11 @@ group:
 
 在 `React` 的内部基于`事件冒泡`的机制实现了一套独有的合成事件机制，它是浏览器的原生事件的跨浏览器包装器。除兼容所有浏览器外，它还拥有和浏览器原生事件相同的接口，包括 `stopPropagation()` 和 `preventDefault()`。
 
-在 `React17` 之前事件的注册是在`document`对象上的，但是在 17 中将事件注册在了 `document` 上，这个做法的目的是为了`渐进升级`，避免多版本的 `React` 共存的场景中事件系统发生冲突。这个 `div` 节点最终要对应一个 `fiber` 节点，`onClick` 则作为它的 `prop`。
+在 `React17` 之前事件的注册是在`document`对象上的，但是在 17 中将事件注册在了 `root`元素上(也就是最初的那个 root dom 节点)，这个做法的目的是为了`渐进升级`，避免多版本的 `React` 共存的场景中事件系统发生冲突。
+
+此外也带来其他好处例如微前端（`document`只有一个，`root`节点可以有多个）。
+
+这个 `div` 节点最终要对应一个 `fiber` 节点，`onClick` 则作为它的 `props`。
 
 ## 为何需要合成事件
 
@@ -23,7 +27,7 @@ group:
 
 `React` 作为一套 `View` 层面的 `UI` 框架，通过渲染得到 `vDOM`，再由 `fiber` 算法决定 `DOM` 树哪些结点需要新增、替换或修改，假如直接在 `DOM` 节点插入原生事件监听，则会导致频繁的调用 `addEventListener` 和 `removeEventListener`，造成性能的浪费。
 
-所以 `React` 采用了`事件代理`的方法，对于大部分事件而言都在 `document`(17 之前) 上做监听，然后根据 `Event` 中的 `target` 来判断事件触发的节点。 通过`队列`的形式，从触发的组件向父组件回溯，然后调用他们 JSX 中定义的 `callback`。
+所以 `React` 采用了`事件代理`的方法，对于大部分事件而言都在 `document`(17 之前) 上做监听，然后根据 `Event` 中的 `target` 来判断事件触发的节点。 通过`队列`的形式，从触发的组件向父组件回溯，然后调用他们 `JSX` 中定义的 `callback`。
 
 其次 `React` 合成的 `SyntheticEvent` 采用了`池`的思想，从而达到节约内存，避免频繁的创建和销毁事件对象的目的。这也是如果我们需要异步使用一个 `syntheticEvent`，需要执行 `event.persist()`才能防止事件对象被释放的原因。
 
@@ -45,7 +49,7 @@ group:
 
 ### 事件收集
 
-指的是事件触发时（实际上是 root 上的事件处理函数被执行），构造合成事件对象，按照冒泡或捕获的路径去组件中收集真正的事件处理函数。
+指的是事件触发时（**实际上是 root 上的事件处理函数被执行**），构造`合成事件对象`，按照冒泡或捕获的路径去组件中收集真正的事件处理函数。
 
 ### 统一触发
 
@@ -141,7 +145,7 @@ render() {
 
 - `Top-level delegation` 用于捕获最原始的浏览器事件，它主要由 `ReactEventListener` 负责，`ReactEventListener` 被注入后可以支持插件化的事件源，这一过程发生在`主线程`。
 
-- `React` 对事件进行规范化和重复数据删除，以解决浏览器的怪癖。这可以在工作线程中完成。
+- `React` 对事件进行规范化和重复数据删除，以解决浏览器的怪癖。这可以在`工作线程`中完成。
 
 - 将这些本地事件（具有关联的顶级类型用来捕获它）转发到 `EventPluginHub`，后者将询问`插件`是否要提取任何合成事件。
 
@@ -153,9 +157,9 @@ render() {
 
 `React` 通过将事件 `normalize` 以让他们在不同浏览器中拥有一致的属性。
 
-`React` 中的 `click` 事件被命名为 `onClick` 类似的其他事件都以 `on` 开头，事件默认都是在冒泡阶段被触发的。
+`React` 中的 `click` 事件被命名为 `onClick` 类似的其他事件都以 `on` 开头，事件默认都是在`冒泡阶段`被触发的。
 
-如需注册捕获阶段的事件处理函数，则应为事件名添加 `Capture`。例如，处理捕获阶段的点击事件请使用 `onClickCapture`，而不是 `onClick`。
+如需注册捕获阶段的事件处理函数，则应为事件名添加 `Capture`。例如，处理`捕获阶段`的点击事件请使用 `onClickCapture`，而不是 `onClick`。
 
 ## 事件注册(<V17)
 
@@ -295,10 +299,11 @@ class App extends React.Component {
 
 接着原生事件冒泡至 `document` 进入 `React` 事件系统，输出 `A`，在 React 事件处理中`#inner` 调用了 `stopPropagation`，事件被停止冒泡。
 
-例子 2:
+例子 2(React Version < 17):
 
-```js
+```jsx
 // < Version 17
+import React, { PureComponent } from 'react';
 export default class Modal extends PureComponent {
   constructor(props) {
     super(props);

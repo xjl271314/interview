@@ -17,28 +17,24 @@ group:
 
 > 首先在`原生 DOM 事件`和 `setTimeout` 等原生里面，`setState` 是同步更新的，其余的地方 `setState` 是异步的，定义为异步不是说该方法本身就是异步的，实际上是同步模式只是看起来像异步。
 
-```js
-import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
+```jsx
+import React, { useState } from 'react';
 
-class Button extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      clicked: fasle,
-    };
-    this.handleClick = this.handleClick.bind(this);
+const Button = () => {
+  const [clicked, setClicked] = useState(false);
+
+  const handleClick = () => {
+    setClicked(true);
+  };
+
+  if (clicked) {
+    return <h1>Thanks</h1>;
   }
-  handleClick() {
-    this.setState({ clicked: true });
-  }
-  render() {
-    if (this.state.clicked) {
-      return <h1>Thanks</h1>;
-    }
-    return <button onClick={this.handleClick}>Click me!</button>;
-  }
-}
+
+  return <button onClick={handleClick}>Click me!</button>;
+};
+
+export default () => <Button />;
 ```
 
 首先，当我们点击了按钮之后,React 会使用下一次的状态 `{ clicked: true }` 更新组件，然后更新 `DOM` 匹配返回的 `<h1>Thanks</h1>`元素。

@@ -77,7 +77,7 @@ export default () => <Info type="warning" txt={txt} />;
 
 1. `IFC` 中的 `line box `一般左右都贴紧整个 `IFC`，但是会因为 `float` 元素而扰乱。`float` 元素会位于 `IFC` 与与 `line box` 之间，使得 `line box` 宽度缩短。
 
-2. `IFC` 中时不可能有`块级元素`的，当插入块级元素时（如 p 中插入 div）会产生两个匿名块与 div 分隔开，即产生两个 `IFC`，每个 `IFC` 对外表现为块级元素，与 `div` 垂直排列。
+2. `IFC` 中是不可能有`块级元素`的，当插入块级元素时（如 p 中插入 div）会产生两个匿名块与 `div` 分隔开，即产生两个 `IFC`，每个 `IFC` 对外表现为块级元素，与 `div` 垂直排列。
 
 ### IFC 的使用场景
 

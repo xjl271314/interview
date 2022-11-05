@@ -21,13 +21,48 @@ group:
 
 ## 大数加法
 
-我们假设有两个数 `const num1 = Math.pow(2,53); const num2 = 20212020201920181;`，进行加法运算。
+我们假设有两个数 `const num1 = Math.pow(2,53); const num2 = 10000000000000001;`，进行加法运算。
 
 ```js
 const num1 = Math.pow(2, 53); //  9007199254740992
-const num2 = 20000000000000000; // 20000000000000000
+const num2 = 10000000000000001;
 
-const sum = num1 + num2; // 29007199254740990
+// 理论上
+const sum = num1 + num2; // 19007199254740993
+// 实际上
+const sum2 = num1 + num2; // 19007199254740990
 ```
 
-按照预期的计算结果最后一位应该是个 2，但是控制台输出的结果末位是 0，那么如何解决大数相加的问题？
+按照预期的计算结果最后一位应该是个 3，但是控制台输出的结果末位是 0，那么如何解决大数相加的问题？
+
+**答案是转成字符串进行运算。**
+
+```js
+const num1 = Math.pow(2, 53).toString(); // '9007199254740992'
+const num2 = '10000000000000001';
+
+function add(num1, num2) {
+  // 由于num1和num2位数不相等先将两个变量长度对齐
+  const maxLength = Math.max(num1.length, num2.length);
+
+  const a = num1.padStart(maxLength, 0);
+  const b = num2.padStart(maxLength, 0);
+
+  // 定义加法过程中需要用到的变量
+  let t = 0;
+  let f = 0; //"进位"
+  let sum = '';
+
+  // 从末尾开始逐位相加
+  for (let i = maxLength - 1; i >= 0; i--) {
+    t = parseInt(a[i]) + parseInt(b[i]) + f;
+    f = Math.floor(t / 10);
+    sum = (t % 10) + sum;
+  }
+
+  if (f == 1) {
+    sum = '1' + sum;
+  }
+  return sum; // 19007199254740993
+}
+```

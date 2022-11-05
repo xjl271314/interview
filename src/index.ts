@@ -21,6 +21,7 @@ export { default as CSSWhere } from './Demos/where';
 export { default as CSSHas } from './Demos/has';
 export { default as CSSEmpty } from './Demos/empty';
 export { default as FlvPlayer } from './flvDemo';
+export { default as BigFileUpload } from './Upload';
 
 // CSS Center
 export { default as CSSHorizonCenter1 } from './Center/horizon1';

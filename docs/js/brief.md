@@ -1202,3 +1202,56 @@ Object.keys(obj2); // ['a', 'b']
 | `for...in`          | ✅       | ❌           | ❌          | ✅       | ❌          |
 
 **注意: 实际运用中假如我们是用来判断后端的返回数据是否为空对象或者说普通对象是否为空对象，实际上使用`Object.keys(obj).length == 0` 即可，否则使用 `Reflect.ownKeys(obj).length == 0 && obj.constructor == Object`来判断。**
+
+## 37. 性能优化的 RAIL 指标是啥?
+
+- Response
+- Animation
+- Idle
+- Load
+
+### Response 如何优化?
+
+目标：事件处理最好在 50ms 内完成。
+
+- 事件处理函数在 `50ms` 内完成，考虑到 `idle task(requestIdelCallBack可以在多个空闲期调用空闲期回调，执行任务，输入事件的响应则排在其后。)` 的情况，事件会排队，等待时间大概在 `50ms`。该优化适用于 `click`，`toggle`，`starting animations` 等，不适用于 `drag` 和 `scroll`事件。
+
+- 复杂的 js 计算尽可能放在后台，如 `web worker`，避免对用户输入造成阻塞。
+
+- 超过 `50ms` 的响应，一定要提供反馈，比如`倒计时`，`进度百分比`，`Toast轻提示`等。
+
+### Animation 如何优化?
+
+目标：产生每一帧的时间不要超过 `10ms`，为了保证浏览器 `60 帧`，每一帧的时间在 `16ms` 左右，但浏览器需要用 `6ms` 来渲染每一帧。
+
+- 在一些高压点上，比如动画，不要去挑战 `cpu`，尽可能地少做事，如：取 `offset`，设置 `style` 等操作使用`transform`进行替代，尽可能地保证 `60 帧`的体验。
+
+- 在渲染性能上，针对不同的动画做一些特定优化。
+
+### Idle 如何优化?
+
+目标：最大化空闲时间，以增大 50ms 内响应用户输入的几率。
+
+- 用空闲时间来完成一些延后的工作，如先加载页面可见的部分，然后利用空闲时间加载剩余部分，此处可以使用 [requestIdleCallback API](https://developer.mozilla.org/zh-CN/docs/Web/API/Window/requestIdleCallback)。
+
+- 在空闲时间内执行的任务尽量控制在 `50ms` 以内，如果更长的话，会影响 `input handle` 的 `pending` 时间。
+
+- 如果用户在空闲时间任务进行时进行交互，必须以此为最高优先级，并暂停空闲时间的任务。
+
+### Load 如何优化?
+
+目标：优化加载速度，可以根据设备、网络等条件。目前，比较好的一个方式是，让你的页面在一个中配的 3G 网络手机上打开时间不超过 5 秒。
+
+- 在手机设备上测试加载性能，选用中配的 3G 网络（400kb/s，400ms RTT），可以使用 [WebPageTest](https://www.webpagetest.org/easy) 来测试。
+
+- 要注意的是，即使用户的网络是 4G，但因为丢包或者网络波动，可能会比预期的更慢。
+
+- 禁用渲染阻塞的资源，延后加载(主要是一些脚本)。
+
+- 可以采用 lazy load，code-splitting 等 其他优化 手段，让第一次加载的资源更少。
+
+### 分析 RAIL 用的工具
+
+- [Chrome DevTools](https://developer.chrome.com/docs/devtools/)
+- [Lighthouse](https://web.dev/measure/)
+- [WebPageTest](https://www.webpagetest.org/easy)

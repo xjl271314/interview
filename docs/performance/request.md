@@ -39,7 +39,7 @@ setInterval(function () {
 
 1. `requestAnimationFrame` 会把每一帧中的所有 DOM 操作集中起来，在一次重绘或回流中就完成，并且重绘或回流的时间间隔紧紧跟随浏览器的刷新频率，一般来说，这个频率为每秒 60 帧。
 
-2. 在隐藏或不可见的元素中，`requestAnimationFrame` 将不会进行`重绘`或`回流`，这当然就意味着更少的的 `cpu`，`gpu` 和`内存使用量`。
+2. 在`隐藏或不可见`的元素中，`requestAnimationFrame` 将不会进行`重绘`或`回流`，这当然就意味着更少的的 `cpu`，`gpu` 和`内存使用量`。
 
 ```js
 function render(){
@@ -124,6 +124,10 @@ function render(){
     };
 })();
 ```
+
+### 场景-实现帧动画
+
+使用 `requestAnimationFrame` 实现帧动画。
 
 ### 场景-大数据渲染
 

@@ -139,5 +139,3 @@ CSS 的最终表现分为以下四步：`Recalculate Style -> Layout -> Paint Se
 - 正确使用 `display` 的属性，由于 `display` 的作用，某些样式组合会无效，徒增样式体积的同时也影响解析性能。
 
 - 不滥用 `web` 字体。对于中文网站来说 `WebFonts` 可能很陌生，国外却很流行。`webfonts` 通常体积庞大，而且一些浏览器在下载 `webFonts` 时会阻塞页面渲染损伤性能。
-
--

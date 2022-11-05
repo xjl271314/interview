@@ -13,7 +13,7 @@ group:
 
 - 2021.08.11
 
-前文我们知道 `Diff` 算法主要是在组件更新阶段去比较虚拟 DOM 的差异性然后进行批量处理更新到真实 DOM 的时候使用到的差异性检出算法。
+前文我们知道 `Diff` 算法主要是在`组件更新阶段`去比较虚拟 DOM 的差异性然后进行批量处理更新到真实 DOM 的时候使用到的差异性检出算法。
 
 上文也得出虚拟 DOM 比真实 DOM 快这句话其实是错的，或者说是不严谨的。
 
@@ -38,7 +38,7 @@ group:
 ```js
 let oldVDOM = {
   // 旧虚拟DOM
-  tagName: 'ul', // 标签名
+  type: 'ul', // 标签名
   props: {
     // 标签属性
     id: 'list',
@@ -46,17 +46,17 @@ let oldVDOM = {
   children: [
     // 标签子节点
     {
-      tagName: 'li',
+      type: 'li',
       props: { class: 'item' },
       children: ['11'],
     },
     {
-      tagName: 'li',
+      type: 'li',
       props: { class: 'item' },
       children: ['22'],
     },
     {
-      tagName: 'li',
+      type: 'li',
       props: { class: 'item' },
       children: ['33'],
     },
@@ -79,7 +79,7 @@ let oldVDOM = {
 ```js
 let newVDOM = {
   // 新虚拟DOM
-  tagName: 'ul', // 标签名
+  type: 'ul', // 标签名
   props: {
     // 标签属性
     id: 'list',
@@ -87,17 +87,17 @@ let newVDOM = {
   children: [
     // 标签子节点
     {
-      tagName: 'li',
+      type: 'li',
       props: { class: 'item' },
       children: ['11'],
     },
     {
-      tagName: 'li',
+      type: 'li',
       props: { class: 'item' },
       children: ['22'],
     },
     {
-      tagName: 'li',
+      type: 'li',
       props: { class: 'item' },
       children: ['44'],
     },

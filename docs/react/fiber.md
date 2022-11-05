@@ -54,7 +54,7 @@ export default App;
 
 网上有很多文章称 `setState` 是`『异步操作』`，所以导致 `setState` 之后并不能获取到最新值，其实这个观点是错误的。
 
-`setState` 是一次`同步操作`，只是每次操作之后并没有立即执行，而是将 `setState` 进行了`缓存`，`mount` 流程结束或事件操作结束，才会拿出所有的 `state` 进行一次计算。如果 `setState` 脱离了 `React` 的生命周期或者 `React` 提供的事件流，`setState` 之后就能立即拿到结果。
+`setState` 是一次`同步操作`，只是每次操作之后并没有立即执行，而是将 `state` 进行了`缓存`，`mount` 流程结束或事件操作结束，才会拿出所有的 `state` 进行一次计算。如果 `setState` 脱离了 `React` 的生命周期或者 `React` 提供的事件流，`setState` 之后就能立即拿到结果。
 
 ```js
 import React from 'react';
@@ -634,7 +634,7 @@ fiberRootNode.current = rootFiber;
 
 ![4](https://react.iamkasong.com/img/wipTreeUpdate.png)
 
-和 mount 时一样，`workInProgress fiber`的创建可以复用`current Fibe`r 树对应的节点数据。
+和 `mount` 时一样，`workInProgress fiber`的创建可以复用`current Fiber` 树对应的节点数据。
 
 `workInProgress Fiber` 树在`render`阶段完成构建后进入 commit 阶段渲染到页面上。渲染完毕后，`workInProgress Fiber` 树变为`current Fiber` 树。
 
@@ -1128,7 +1128,7 @@ export function reconcileChildren(
 
 从代码可以看出，和`beginWork`一样，他也是通过`current === null` ?区分 mount 与 update。
 
-不论走哪个逻辑，最终他会生成新的子 Fiber 节点并赋值给`workInProgress.child`，作为本次 beginWork 返回值，并作为下次`performUnitOfWork`执行时`workInProgress`的传参。
+不论走哪个逻辑，最终他会生成新的子 Fiber 节点并赋值给`workInProgress.child`，作为本次 `beginWork` 返回值，并作为下次`performUnitOfWork`执行时`workInProgress`的传参。
 
 ```jsx
 /**

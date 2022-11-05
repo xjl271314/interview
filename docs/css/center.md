@@ -48,7 +48,7 @@ export default () => <CSSHorizonCenter1 />;
 
 ### absolute + margin
 
-该方案下`父元素`与`当前元素`的高度都已知。
+该方案下`父元素`与`当前元素`的高度都已知，利用 `margin: auto` 进行居中。
 
 ```jsx
 import React from 'react';
@@ -120,7 +120,7 @@ export default () => {
 
 ### absolute + calc
 
-使用 CSS3 的一个 `calc` 计算函数来代替。
+使用 CSS3 的一个 `calc` 计算函数来计算`top`、`left`值。
 
 ```jsx
 import React from 'react';
