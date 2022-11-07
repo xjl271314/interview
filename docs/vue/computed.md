@@ -1,8 +1,8 @@
 ---
 title: computed 与 watch
 nav:
-  title: Vue
-  path: /vue
+  title: 前端框架
+  path: /frontend
   order: 0
 group:
   title: vue2

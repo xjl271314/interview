@@ -1,8 +1,8 @@
 ---
 title: promise
 nav:
-  title: javascript
-  path: /javascript
+  title: 前端基础
+  path: /base
   order: 0
 group:
   title: javascript相关试题

@@ -1,8 +1,8 @@
 ---
 title: 经典问答
 nav:
-  title: html
-  path: /html
+  title: 前端基础
+  path: /base
 group:
   title: 经典简答
   path: /html/quick

@@ -1,12 +1,12 @@
 ---
 title: 经典问答
 nav:
-  title: 开放问题
-  path: /open
+  title: 模拟试题
+  path: /demos
   order: 0
 group:
   title: 开放问题
-  path: /open/list
+  path: /demos/chat
 ---
 
 # 经典问答题

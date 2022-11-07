@@ -1,8 +1,8 @@
 ---
 title: 如何保证页面文件能被完整送达浏览器
 nav:
-  title: html
-  path: /html
+  title: 前端基础
+  path: /base
 group:
   title: html、浏览器相关试题
   path: /html/project

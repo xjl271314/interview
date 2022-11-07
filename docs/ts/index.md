@@ -1,8 +1,9 @@
 ---
 title: 知识手册
 nav:
-  title: typescript
-  path: /typescript
+  title: 工程化
+  path: /project
+  order: 2
 group:
   title: typescript
   path: /typescript/project

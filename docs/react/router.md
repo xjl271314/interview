@@ -1,11 +1,11 @@
 ---
 title: react-router核心原理
 nav:
-  title: React
-  path: /react
+  title: 前端框架
+  path: /frontend
   order: 0
 group:
-  title: react相关试题
+  title: react
   path: /react/project
 ---
 

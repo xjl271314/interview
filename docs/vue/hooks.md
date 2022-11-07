@@ -1,8 +1,8 @@
 ---
 title: 为什么vue和react都选择了Hooks
 nav:
-  title: Vue
-  path: /vue
+  title: 前端框架
+  path: /frontend
   order: 0
 group:
   title: vue2

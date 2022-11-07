@@ -3,7 +3,7 @@ title: 如何设计一套埋点监控体系
 nav:
   title: 工程化
   path: /project
-  order: 0
+  order: 2
 group:
   title: 前端工程化相关试题
   path: /project/project

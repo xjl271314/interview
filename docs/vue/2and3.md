@@ -1,8 +1,8 @@
 ---
 title: Vue2与Vue3的区别
 nav:
-  title: Vue
-  path: /vue
+  title: 前端框架
+  path: /frontend
   order: 0
 group:
   title: vue2

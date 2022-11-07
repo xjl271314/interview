@@ -1,8 +1,8 @@
 ---
 title: 编译器和解释器
 nav:
-  title: javascript
-  path: /javascript
+  title: 前端基础
+  path: /base
   order: 0
 group:
   title: javascript相关试题

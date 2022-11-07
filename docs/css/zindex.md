@@ -1,8 +1,8 @@
 ---
 title: CSS层叠上下文
 nav:
-  title: css
-  path: /css
+  title: 前端基础
+  path: /base
 group:
   title: css相关试题
   path: /css/project

@@ -1,8 +1,8 @@
 ---
 title: MutationObserver 与 IntersectionObserver
 nav:
-  title: javascript
-  path: /javascript
+  title: 前端基础
+  path: /base
   order: 0
 group:
   title: MutationObserver 与 IntersectionObserver

@@ -1,8 +1,8 @@
 ---
 title: 输入网址到页面展现发生了什么
 nav:
-  title: html
-  path: /html
+  title: 前端基础
+  path: /base
 group:
   title: html、浏览器相关试题
   path: /html/project

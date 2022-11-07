@@ -1,8 +1,8 @@
 ---
 title: CROS跨域处理
 nav:
-  title: javascript
-  path: /javascript
+  title: 前端基础
+  path: /base
   order: 0
 group:
   title: javascript相关试题
@@ -15,7 +15,29 @@ group:
 
 `CROS(跨域资源共享)`是一种基于 HTTP 头的机制，该机制通过允许服务器标示除了它自己以外的其它`origin`（域，协议和端口），这样浏览器可以访问加载这些资源。
 
-跨源资源共享还通过一种机制来检查服务器是否会允许要发送的真实请求，该机制通过浏览器发起一个到服务器托管的跨源资源的预检请求(fetch 的 post 请求会发送 OPTIONS)。在预检中，浏览器发送的头中标示有 HTTP 方法和真实请求中会用到的头。
+`origin`是`cors`的重要标识，只要是**非同源或者 POST 请求**都会带上`Origin`字段，接口返回后服务器也可以将`Access-Control-Allow-Origin`设置为请求的`Origin`，解决`cors`如何指定多个域名的问题。
+
+## cors 请求划分
+
+cors 将请求分为`简单请求`和`非简单请求`。
+
+### 简单请求
+
+- 只支持`HEAD`，`get`、`post`请求方式；
+- 没有自定义的请求头；
+- `Content-Type`：只限于三个值`application/x-www-form-urlencoded`、`multipart/form-data`、`text/plain`；
+
+对于简单请求，浏览器直接发出`CORS`请求。具体来说，就是在头信息之中，增加一个`Origin`字段。如果浏览器发现这个接口回应的头信息没有包含`Access-Control-Allow-Origin`字段的话就会报`跨域错误`。
+
+### 非简单请求
+
+非简单请求，会在正式通信之前，增加一次`HTTP查询请求`，称为`预检请求（options）`，用来判断当前网页所在的域名是否在服务器的许可名单之中。
+
+如果在许可名单中，就会发正式请求；如果不在，就会报跨越错误。
+
+例如：`fetch` 的 `post` 请求会发送 `OPTIONS`。在预检中，浏览器发送的头中标示有 HTTP 方法和真实请求中会用到的头。
+
+注：新版 chrome 浏览器看不到 OPTIONS 预检请求，可以网上查找对应的查看方法。
 
 ## 同源策略
 

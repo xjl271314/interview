@@ -1,11 +1,11 @@
 ---
 title: wx.request
 nav:
-  title: 微信小程序
-  path: /miniprogram
+  title: 前端框架
+  path: /frontend
   order: 0
 group:
-  title: 微信小程序相关试题
+  title: 微信小程序
   path: /miniprogram/project
 ---
 

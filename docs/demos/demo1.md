@@ -4,13 +4,16 @@ nav:
   title: 模拟试题
   path: /demos
   order: 0
+group:
+  title: 技术部分
+  path: /demos/technology
 ---
 
 - 2022.07.11
 
 ## 1. apply 与 call
 
-### 你能说说 js 中 call 和 apply 有什么区别吗?
+**你能说说 js 中 call 和 apply 有什么区别吗?**
 
 首先 `call` 和 `apply` 两个方法都是用来改变函数运行时`this`指向问题。
 
@@ -45,7 +48,7 @@ function callSum(num1, num2) {
 callSum(20, 30); // 50
 ```
 
-### 那么你能够自己手写实现 apply 和 call 两个方法吗?
+**那么你能够自己手写实现 apply 和 call 两个方法吗?**
 
 ```js
 // apply
@@ -74,7 +77,9 @@ Function.prototype.call = function (context = window) {
 };
 ```
 
-## 2.你能说说 js 中的事件执行机制么(Event Loop)?
+## 2.Event Loop
+
+**你能说说 js 中的事件执行机制么？**
 
 首先，我们知道 js 是一门单线程的语言，为什么是单线程在于其主要用于处理网页中的交互逻辑，如果被设计成一门多线程的语言，那么就要处理各种互斥的逻辑。
 
@@ -108,7 +113,7 @@ Function.prototype.call = function (context = window) {
 
 总结来说，可以说 `Event Loop` 是通过设计 `Loop机制` 和 `异步任务队列`来解决主线程执行阻塞问题，并且设计了一套 `Micro Task`插队机制的事件交互机制。
 
-### 你提到了 宏任务 和 微任务，那么有哪些宏任务和微任务呢?
+**你提到了 宏任务 和 微任务，那么有哪些`宏任务`和`微任务`呢?**
 
 - 宏任务
   - 整体代码的 script 标签
@@ -3230,3 +3235,15 @@ Yarn 的安装大致分为 5 个步骤:
    创建具有动态路由的页面（增量静态再生），允许在应用运行时再重新生成每个页面 HTML，而不需要重新构建整个应用，这样即使有海量页面（比如博客、商品介绍页等场景），也能使用上 SSG 的特性。
 
    在 Nextjs 中，使用 ISR 需要`getStaticPaths` 和 `getStaticProps` 同时配合使用。
+
+## 39. jsonp 如何做安全防范?
+
+`jsonp`是以`callback`的形式，返回服务端的数据 如`http://www.qq.com/getUserInfo?callback=action`
+
+1. 白名单验证
+
+通过请求头上的`Referer`或`origin`字段可以判断请求的来源，如果服务器判断请求的域名不在白名单中，就拒绝对应的请求。
+
+2. 对返回的内容进行验证或转义
+
+根据`jsonp`的原理，当拿到`callback`的参数后，会直接当`js`代码执行，如果`callback`后面的参数是`script`标签，就会变成`xss`攻击了，所以要对返回的内容进行转义并限制长度，防范类似的攻击。

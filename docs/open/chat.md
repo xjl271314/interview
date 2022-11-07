@@ -1,12 +1,12 @@
 ---
 title: 谈话技巧
 nav:
-  title: 开放问题
-  path: /open
+  title: 模拟试题
+  path: /demos
   order: 0
 group:
   title: 开放问题
-  path: /open/chat
+  path: /demos/chat
 ---
 
 ## 亲近术沟通

@@ -1,8 +1,8 @@
 ---
 title: 跨页面通信
 nav:
-  title: html
-  path: /html
+  title: 前端基础
+  path: /base
 group:
   title: html、浏览器相关试题
   path: /html/project
