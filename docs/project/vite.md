@@ -45,10 +45,6 @@ group:
 
     Vite 以 [原生 ESM](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules) 方式提供源码。这实际上是让浏览器接管了打包程序的部分工作：`Vite` 只需要在浏览器请求源码时进行转换并按需提供源码。根据情景动态导入代码，即只在当前屏幕上实际使用时才会被处理。
 
-    ![早期](https://cn.vitejs.dev/assets/bundler.37740380.png)
-
-    ![vite](https://cn.vitejs.dev/assets/esm.3070012d.png)
-
 - #### 缓慢的更新
 
   基于打包器启动时，重建整个包的效率很低。原因显而易见：因为这样更新速度会随着应用体积增长而直线下降。
@@ -118,6 +114,14 @@ export default defineConfig({
 ```
 
 这里的模板中引用了 `react`插件，需要实现其他额外功能的时候，都可以借助其插件机制进行扩展。这些第三方模块也可以在[vitejs 仓库](https://github.com/vitejs/awesome-vite#templates)中找到。 同时，由于`vite`插件扩展了`rollup`的接口，所以要实现一个自己的`vite`插件跟写`rollup`插件是类似的。此处，可以参考 [插件 API | Vite 官方中文文档](https://cn.vitejs.dev/guide/api-plugin.html) 。
+
+## 实现流程
+
+1. 通过`koa`开启一个服务，获取请求的静态文件内容
+2. 通过`es-module-lexer` 解析 `ast` 拿到`import`的内容
+3. 判断 `import` 导入模块是否为`三方模块`，是的话，返回`node_module`下的模块， 如 `import vue` 返回 `import './@modules/vue'`
+4. 如果是`.vue`文件，`vite` 拦截对应的请求，读取`.vue`文件内容进行编译，通过 `compileTemplate` 编译模板，将 `template` 转化为 `render函数`
+5. 通过 `babel parse`对 `js` 进行编译，最终返回编译后的`js`文件
 
 ## 工作原理
 

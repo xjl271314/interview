@@ -13,7 +13,35 @@ group:
 
 - 2021.07.19
 
-> Babel 的三个主要处理步骤分别是：`解析（parse）`，`转换（transform）`，`生成(generate）`。
+`Babel` 的三个主要处理步骤分别是：`解析（parse）`，`转换（transform）`，`生成(generate）`。
+
+1. 通过`babylon`将`js`转化成`ast` (抽象语法树)
+2. 通过`babel-traverse`对`ast`进行遍历，使用`babel`插件转化成新的`ast`
+3. 通过`babel-generator`将`ast`生成新的 js 代码
+
+## 配置和基本使用
+
+```js
+.babelrc {
+  // 预设: Babel 官方做了一些预设的插件集，称之为 Preset，我们只需要使用对应的 Preset 就可以了
+  "presets": [],
+   // babel和webpack类似，主要是通过plugin插件进行代码转化的，如果不配置插件，babel会将代码原样返回
+  "plugins": []
+}
+
+// 配置browserslist
+// browserslist 用来控制要兼容浏览器版本，配置的范围越具体，就可以更精确控制Polyfill转化后的体积大小
+"browserslist": [
+   // 全球超过1%人使用的浏览器
+   "> 1%",
+   //  所有浏览器兼容到最后两个版本根据CanIUse.com追踪的版本
+   "last 2 versions",
+   // chrome 版本大于70
+   "chrome >= 70"
+   // 排除部分版本
+   "not ie <= 8"
+]
+```
 
 ## Babel 的解析
 
@@ -145,6 +173,60 @@ import { a, b, c } from 'x';
 ### source
 
 `source` 包含一个字符串节点 `StringLiteral`，对应了引用资源所在位置。示例中就是 `axios`。
+
+## 开发一个 babel 插件
+
+**Babel 插件的作用**
+
+Babel 插件担负着编译过程中的核心任务：`转换 AST`
+
+**babel 插件的基本格式**
+
+- 一个函数，参数是`babel`，然后就是返回一个对象，key 是`visitor`，然后里面的对象是一个箭头函数
+- 函数有两个参数，`path`表示路径，`state`表示状态.
+- `CallExpression`就是我们要访问的节点，`path` 参数表示当前节点的位置，包含的主要是当前节点（node）内容以及父节点（parent）内容
+
+```js
+module.exports = function (babel) {
+   let t = babel.type
+   return {
+      visitor: {
+        CallExression: (path, state) => {
+           do soming
+     }}}}
+```
+
+最简单的插件示例:
+
+```js
+module.exports = function (babel) {
+  let t = babel.types;
+  return {
+    visitor: {
+      VariableDeclarator(path, state) {
+        // VariableDeclarator 是要找的变量声明
+        if (path.node.id.name == 'a') {
+          // 方式一：直接修改name
+          path.node.id.name = 'b';
+          // 方式二：把id是a的ast换成b的ast
+          // path.node.id = t.Identifier("b");
+        }
+      },
+    },
+  };
+};
+```
+
+在`.babelrc`中引入`babelPluginAtoB`插件
+
+```js
+const babelPluginAtoB = require('./babelPluginAtoB.js');
+{
+    "plugins": [
+        [babelPluginAtoB]
+    ]
+}
+```
 
 ## Babel Stages
 
