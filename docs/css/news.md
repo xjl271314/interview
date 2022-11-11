@@ -19,10 +19,38 @@ group:
 ### :is 与 :where
 
 ```jsx
+/**
+ * inline: true
+ */
 import React from 'react';
 import { CSSWhere } from 'interview';
 
 export default () => <CSSWhere />;
+```
+
+```js
+import React from 'react';
+import styles from './index.less';
+
+export default function () {
+  return (
+    <main className={styles.main}>
+      <p className={styles.p}>文本</p>
+    </main>
+  );
+}
+
+.main .p {
+  color: green;
+}
+
+:is(.main) .p {
+  color: purple;
+}
+
+:where(.main) .p {
+  color: red;
+}
 ```
 
 上述代码后，最终 `<p>`标签的颜色为`purple`;

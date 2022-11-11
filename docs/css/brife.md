@@ -16,31 +16,27 @@ group:
 
 使用`padding-bottom`来实现。
 
-```html
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-    <style>
-      .outer {
-        width: 400px;
-        height: 600px;
-        background: red;
-      }
+```jsx
+import React from 'react';
 
-      .inner {
-        width: 50%;
-        padding-bottom: 50%;
-        background: blue;
-      }
-    </style>
-  </head>
-  <body>
-    <div class="outer">
-      <div class="inner"></div>
+const styles = {
+  outer: {
+    width: '200px',
+    height: '200px',
+    background: 'red',
+  },
+  inner: {
+    width: '50%',
+    paddingBottom: '50%',
+    background: 'blue',
+  },
+};
+
+export default () => {
+  return (
+    <div style={styles.outer}>
+      <div style={styles.inner} />
     </div>
-  </body>
-</html>
+  );
+};
 ```

@@ -557,3 +557,23 @@ const txt =
 
 export default () => <Info type="info" txt={txt} />;
 ```
+
+## 附录
+
+```scss
+//当元素数量为指定数量时 选择所有的元素
+// $bortherClassName的原因是因为层级嵌套的情况下会失效
+@mixin nItems($n, $bortherClassName) {
+  &:first-child:nth-last-child(#{$n}),
+  &:first-child:nth-last-child(#{$n}) ~ #{$bortherClassName} {
+    @content;
+  }
+}
+
+// css选择器 选择列表中第n个到第m个之间的元素
+@mixin checkedInCros($start, $end) {
+  :nth-child(-n + #{$end}):nth-child(n + #{$start}) {
+    @content;
+  }
+}
+```

@@ -30,7 +30,7 @@ group:
 
 ![IE模型](https://img-blog.csdnimg.cn/20210610205855268.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3hqbDI3MTMxNA==,size_16,color_FFFFFF,t_70)
 
-## 盒模型在 CSS 中的体现
+## CSS 中的盒模型
 
 我们知道了盒模型的定义之后，我们来看看在 CSS 中是如何去体现的呢?
 
@@ -67,7 +67,7 @@ group:
 
 采用`border-box`之后我们的元素宽度`width=content + 2 padding + 2 border = 70px + 2 10px + 2 5px = 100px`。
 
-## javascript 如何设置获取盒模型对应的宽和高
+## js 获取盒模型对应的宽和高
 
 - dom.style.width/height:
 
@@ -85,7 +85,7 @@ group:
 
 获取元素渲染后的宽和高，大多浏览器支持。IE9 以上支持，除此外还可以取到相对于视窗的上下左右的距离。
 
-## 盒模型中的外边距重叠
+## 外边距重叠
 
 > 当两个垂直外边距相遇时，他们将形成一个外边距，合并后的外边距高度等于两个发生合并的外边距的高度中的较大者。
 
@@ -97,7 +97,7 @@ import React from 'react';
 import { Info } from 'interview';
 
 const txt =
-  '只有普通文档流中块级元素的垂直外边距才会发生外边距合并，`行内框`、`浮动框`或`绝对定位之间`的外边距不会合并。';
+  '\n只有`普通文档流中块级元素`的垂直外边距才会发生外边距合并，`行内框`、`浮动框`或`绝对定位之间`的外边距不会合并。';
 
 export default () => <Info type="warning" txt={txt} />;
 ```

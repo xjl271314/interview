@@ -122,8 +122,7 @@ group:
 .wrap {
   display: flex;
   div {
-    order: 1 //数字
-;
+    order: 1; /* 数值越小排列越靠前。*/
   }
 }
 ```

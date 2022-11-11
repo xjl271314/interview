@@ -78,3 +78,11 @@ export default () => {
 ## 兼容情况
 
 ![兼容情况](https://img-blog.csdnimg.cn/e11e2fb1c3604f2ba5ddec35bc31fdc1.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAeGpsMjcxMzE0,size_20,color_FFFFFF,t_70,g_se,x_16)
+
+## 注意事项
+
+1. 兼容性较好，但是需要在元素渲染完成之后再去调用，在`React`中可以通过使用`$ref.current.getBoundingClientRect`来获取相关信息。
+2. 返回的是一个对象，包含了以下的一些信息：<br/>
+   ![getBoundingClientRect返回值](https://img-blog.csdnimg.cn/5b7437ceaab44dd981bf5894a958ba7e.png)
+3. 实际使用的情况下在`android9、10、11`系统的 webview 中出现过元素取不到的情况，导致调用`null.getBoundingClientRect`，需要注意调用前对元素的判断。
+4. 亲测在`IOS 13.6`系统中，在`useEffect`中使用`setTimeout`获取对应元素的信息会导致报错。
