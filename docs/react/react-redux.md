@@ -768,7 +768,7 @@ function connect(mapStateToProps?, mapDispatchToProps?, mergeProps?, options?)
    }
    ```
 
-#### 源码流程分析
+## 源码流程分析
 
 我们从 connect 的入口文件开始，源代码部分比较长包含了一堆定义，[完整代码](https://github.com/reduxjs/react-redux/blob/master/src/connect/connect.ts)，我们关注几个关键的函数:
 
