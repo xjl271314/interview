@@ -58,4 +58,6 @@ export default defineConfig({
   },
   links: [],
   scripts: [],
+  mfsu: {},
+  webpack5: {},
 });

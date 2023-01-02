@@ -22,13 +22,13 @@ group:
 
 在标准模型(W3C)模型下，即`box-sizing: content-box;` 元素的`width = content`, 高度计算相同。
 
-![W3C模型](https://img-blog.csdnimg.cn/20210610205922349.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3hqbDI3MTMxNA==,size_16,color_FFFFFF,t_70)
+![W3C模型](https://img-blog.csdnimg.cn/20210610205855268.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3hqbDI3MTMxNA==,size_16,color_FFFFFF,t_70)
 
 ### IE 模型
 
 在 `IE 盒模型`下，即`box-sizing: border-box;`元素的`width = content + padding + border`,高度计算相同。
 
-![IE模型](https://img-blog.csdnimg.cn/20210610205855268.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3hqbDI3MTMxNA==,size_16,color_FFFFFF,t_70)
+![IE模型](https://img-blog.csdnimg.cn/20210610205922349.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3hqbDI3MTMxNA==,size_16,color_FFFFFF,t_70)
 
 ## CSS 中的盒模型
 
