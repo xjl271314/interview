@@ -76,7 +76,7 @@ yarn create @vitejs/app
 
 接着就会进入交互式模式，让你选择对应的模板，输入项目名等操作。
 
-![在这里插入图片描述](https://img-blog.csdnimg.cn/0a26666036c849ed963a351b84e2d6e6.png?x-oss-process=image,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAeGpsMjcxMzE0,size_18,color_FFFFFF,t_70,g_se,x_16)
+![在这里插入图片描述](https://pic1.58cdn.com.cn/nowater/webim/big/n_v20379e0d195794d9da87b34f8599c0bc6.png)
 
 如果需要手动指定模板和项目名，可以使用如下命令:
 
@@ -100,6 +100,8 @@ yarn run serve
 ```
 
 ## 插件机制
+
+插件是在初始化 vue 项目的时候，就被自动注入到 `vite.config.js` 中的插件。
 
 vite 主要使用插件进行扩展功能，可以看到上述最简单的初始化项目启动后，在其配置文件`vite.config.ts` 文件下，有如下代码：
 
@@ -1259,3 +1261,21 @@ const replaceImportMeta = {
   },
 };
 ```
+
+## vite、rollup 钩子函数
+
+| 字段               | 说明                                                                                | 所属                |
+| :----------------- | :---------------------------------------------------------------------------------- | :------------------ |
+| name               | 插件名称                                                                            | vite 和 rollup 共享 |
+| handleHotUpdate    | 执行自定义 HMR（模块热替换）更新处理                                                | vite 独享           |
+| config             | 在解析 Vite 配置前调用。可以自定义配置，会与 vite 基础配置进行合并                  | vite 独享           |
+| configResolved     | 在解析 Vite 配置后调用。可以读取 vite 的配置，进行一些操作                          | vite 独享           |
+| configureServer    | 用于配置开发服务器的钩子。最常见的用例是在内部 connect 应用程序中添加自定义中间件。 | vite 独享           |
+| transformIndexHtml | 转换 index.html 的专用钩子。                                                        | vite 独享           |
+| options            | 在收集 rollup 配置前，vite （本地）服务启动时调用，可以和 rollup 配置进行合并       | vite 和 rollup 共享 |
+| buildStart         | 在 rollup 构建中，vite （本地）服务启动时调用，在这个函数中可以访问 rollup 的配置   | vite 和 rollup 共享 |
+| resolveId          | 在解析模块时调用，可以返回一个特殊的 resolveId 来指定某个 import 语句加载特定的模块 | vite 和 rollup 共享 |
+| load               | 在解析模块时调用，可以返回代码块来指定某个 import 语句加载特定的模块                | vite 和 rollup 共享 |
+| transform          | 在解析模块时调用，将源代码进行转换，输出转换后的结果，类似于 webpack 的 loader      | vite 和 rollup 共享 |
+| buildEnd           | 在 vite 本地服务关闭前，rollup 输出文件到目录前调用                                 | vite 和 rollup 共享 |
+| closeBundle        | 在 vite 本地服务关闭前，rollup 输出文件到目录前调用                                 | vite 和 rollup 共享 |
